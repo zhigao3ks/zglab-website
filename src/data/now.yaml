@@ -1,0 +1,9 @@
+currentProject: agentic-enterprise-qa
+eyebrow: Current Focus
+title: 让 Agent 系统从“能够回答”走向“可验证地回答”
+problem: 当前关注复杂企业文档中的混合检索、跨源工具协同，以及回答忠实度与完整性的自动化评测。
+recentUpdate: 正在整理 Agent 编排、检索链路和 Evaluation Harness 的项目档案。
+principles:
+  - 明确问题边界
+  - 保留执行链路
+  - 建立量化评估

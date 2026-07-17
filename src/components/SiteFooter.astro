@@ -1,0 +1,28 @@
+---
+import { siteConfig } from '../config/site';
+import { profile } from '../lib/data';
+---
+
+<footer class="site-footer">
+  <div class="site-shell footer-grid">
+    <div>
+      <p class="footer-kicker">{siteConfig.footerKicker}</p>
+      <p class="footer-title">{siteConfig.footerStatement}</p>
+    </div>
+    <div class="footer-links" aria-label="页脚链接">
+      {
+        profile.github && (
+          <a href={profile.github}>
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
+        )
+      }
+      {profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+      {profile.website && <a href={profile.website}>zglab.fun</a>}
+    </div>
+  </div>
+  <div class="site-shell footer-bottom">
+    <p>© {siteConfig.copyrightStartYear} {siteConfig.owner}. All rights reserved.</p>
+    <p>Static by Astro · Served by Nginx</p>
+  </div>
+</footer>

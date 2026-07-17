@@ -1,0 +1,86 @@
+---
+import { visibleNavigation } from '../config/navigation';
+import { profile } from '../lib/data';
+import GithubIcon from './GithubIcon.astro';
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="site-shell header-inner">
+    <a class="brand" href="/" aria-label="ZGLab 首页">
+      <span class="brand-mark" aria-hidden="true">ZG</span>
+      <span class="brand-name">ZGLab</span>
+      <span class="brand-index">/ 01</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+    >
+      <span>菜单</span>
+      <span class="nav-toggle-lines" aria-hidden="true"></span>
+    </button>
+
+    <nav id="primary-navigation" class="primary-nav" aria-label="主导航">
+      <ol>
+        {
+          visibleNavigation.map((item, index) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                <span class="nav-index">{String(index + 1).padStart(2, '0')}</span>
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="header-actions">
+      {
+        profile.github && (
+          <a
+            class="icon-link"
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="访问黄志高的 GitHub"
+          >
+            <GithubIcon />
+          </a>
+        )
+      }
+      {
+        profile.email && (
+          <a class="contact-link" href={`mailto:${profile.email}`}>
+            联系我
+          </a>
+        )
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const navigation = document.querySelector<HTMLElement>('.primary-nav');
+
+  toggle?.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    navigation?.classList.toggle('is-open', !expanded);
+  });
+
+  navigation?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      navigation.classList.remove('is-open');
+    });
+  });
+</script>

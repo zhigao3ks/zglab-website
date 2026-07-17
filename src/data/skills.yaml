@@ -1,0 +1,47 @@
+- id: llm-agent
+  title: 大模型与 Agent 系统
+  description: 熟悉基于 LangGraph 和 LangChain 的 Agent 工作流设计，具备 MCP 工具接入、Prompt Engineering、知识库构建、Embedding 检索、混合召回、重排序与自动化评测经验。
+  keywords:
+    - LangGraph
+    - LangChain
+    - MCP
+    - Prompt Engineering
+    - Agent Orchestration
+    - RAG
+    - Embedding
+    - Vector Database
+    - Hybrid Search
+    - BGE-Reranker
+    - LLM-as-a-Judge
+    - Multi-Agent
+- id: machine-learning
+  title: 机器学习与深度学习
+  description: 熟悉常见机器学习算法与深度学习模型，能够使用 PyTorch 完成模型训练、微调、参数优化和实验评估，掌握数据预处理、特征提取与模型效果分析方法。
+  keywords:
+    - PyTorch
+    - CNN
+    - RNN
+    - LSTM
+    - Transformer
+    - LoRA
+    - 逻辑回归
+    - 决策树
+    - 随机森林
+    - 特征工程
+    - 模型评估
+- id: engineering
+  title: 工程开发与基础设施
+  description: 熟练使用 Python 和 Java，具备后端接口、实时通信、数据库设计、缓存管理、容器化部署和 Linux 服务运维经验，重视代码结构、系统可观测性与工程可维护性。
+  keywords:
+    - Python
+    - Java
+    - FastAPI
+    - WebSocket
+    - PostgreSQL
+    - MySQL
+    - Redis
+    - NumPy
+    - Pandas
+    - Docker
+    - Nginx
+    - Linux

@@ -1,0 +1,13 @@
+---
+interface Props {
+  status: string;
+  label: string;
+}
+
+const { status, label } = Astro.props;
+---
+
+<span class:list={['status-pill', `status-${status}`]}>
+  <span class="status-dot" aria-hidden="true"></span>
+  {label}
+</span>

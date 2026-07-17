@@ -1,0 +1,30 @@
+---
+interface Props {
+  index: string;
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+const { index, eyebrow, title, description, href, linkLabel = '查看全部' } = Astro.props;
+---
+
+<header class="section-heading">
+  <div class="section-heading-main">
+    <span class="section-index">{index}</span>
+    <div>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2>{title}</h2>
+    </div>
+  </div>
+  {description && <p class="section-description">{description}</p>}
+  {
+    href && (
+      <a class="text-link section-link" href={href}>
+        {linkLabel} <span aria-hidden="true">↗</span>
+      </a>
+    )
+  }
+</header>

@@ -1,0 +1,141 @@
+---
+import SectionHeader from '../components/SectionHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { awards, profile, publications } from '../lib/data';
+---
+
+<BaseLayout
+  title="研究与成果 — ZGLab"
+  description="黄志高在大模型、Agent、RAG、多智能体系统方向的研究主题、论文与竞赛成果。"
+>
+  <header class="site-shell page-hero">
+    <div class="page-hero-copy">
+      <p class="page-kicker">RESEARCH INDEX / THREADS & OUTPUT</p>
+      <h1>研究与成果</h1>
+      <p>以问题定义、协同机制和可量化评估为线索，记录研究方向、论文工作与竞赛实践。</p>
+    </div>
+    <div class="page-hero-meta">
+      <p>
+        Research Threads <strong>{String(profile.researchThreads.length).padStart(2, '0')}</strong>
+      </p>
+      <p>Publications <strong>{String(publications.length).padStart(2, '0')}</strong></p>
+      <p>Competition Records <strong>{String(awards.length).padStart(2, '0')}</strong></p>
+    </div>
+  </header>
+
+  <section class="page-section">
+    <div class="site-shell research-intro-grid">
+      <aside class="research-index">
+        <p class="eyebrow">Research Map</p>
+        <ul>
+          {
+            profile.researchThreads.map((thread, index) => (
+              <li>
+                {String(index + 1).padStart(2, '0')} / {thread.title}
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+      <div class="research-content">
+        {
+          profile.researchThreads.map((thread, index) => (
+            <article class="research-thread-detail">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{thread.title}</h3>
+                <p>{thread.summary}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="publications" class="page-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="01"
+        eyebrow="Publications"
+        title="论文成果"
+        description="不展示未提供的 DOI、链接、发表年月或卷期号。"
+      />
+      <ol class="publication-list">
+        {
+          publications.map((publication, index) => (
+            <li class="publication-item">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{publication.title}</h3>
+                <p>{publication.summary}</p>
+              </div>
+              <div class="publication-meta">
+                <div class="publication-meta-row">
+                  <>
+                    <span>Journal</span>
+                    <span>{publication.journal}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <>
+                    <span>Level</span>
+                    <span>{publication.level}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <>
+                    <span>Role</span>
+                    <span>{publication.role}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <span>Status</span>
+                  <span
+                    class:list={{
+                      'publication-status-review': publication.status.includes('Under Review'),
+                    }}
+                  >
+                    {publication.status}
+                  </span>
+                </div>
+                {publication.note && (
+                  <div class="publication-meta-row">
+                    <span>Note</span>
+                    <span>{publication.note}</span>
+                  </div>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="awards" class="page-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="02"
+        eyebrow="Competition"
+        title="竞赛成果"
+        description="围绕复杂场景图像理解与多模态交错指令理解的团队成果。"
+      />
+      <ol class="award-list">
+        {
+          awards.map((award) => (
+            <li class="award-item">
+              <strong class="award-rank">{award.result.replace('团队', '')}</strong>
+              <div>
+                <p class="award-task">{award.task}</p>
+                <h3>{award.name}</h3>
+                <p>{award.summary}</p>
+              </div>
+              <p class="award-level">{award.level}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

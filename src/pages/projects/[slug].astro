@@ -1,0 +1,145 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import StatusPill from '../../components/StatusPill.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projectStatusLabels } from '../../lib/status';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => data.visible);
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const projectLinks = [
+  { label: '在线演示', href: data.links.demo },
+  { label: '代码仓库', href: data.links.repository },
+  { label: '项目文档', href: data.links.documentation },
+].filter((link): link is { label: string; href: string } => Boolean(link.href));
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: '2-digit' });
+---
+
+<BaseLayout title={`${data.title} — ZGLab`} description={data.summary}>
+  <header class="site-shell project-detail-hero">
+    <a class="project-back" href="/projects">← 返回项目索引</a>
+    <div class="project-detail-heading">
+      <div>
+        {data.categories.length > 0 && <p class="page-kicker">{data.categories.join(' / ')}</p>}
+        <h1>{data.title}</h1>
+        <p class="project-lead">{data.summary}</p>
+      </div>
+      <aside class="project-meta-panel" aria-label="项目元数据">
+        {
+          data.status && (
+            <div class="project-meta-item">
+              <span class="meta-label">Status</span>
+              <p>
+                <StatusPill status={data.status} label={projectStatusLabels[data.status]} />
+              </p>
+            </div>
+          )
+        }
+        {
+          data.startedAt && (
+            <div class="project-meta-item">
+              <span class="meta-label">Started</span>
+              <p>{dateFormatter.format(data.startedAt)}</p>
+            </div>
+          )
+        }
+        {
+          data.updatedAt && (
+            <div class="project-meta-item">
+              <span class="meta-label">Updated</span>
+              <p>{dateFormatter.format(data.updatedAt)}</p>
+            </div>
+          )
+        }
+        {
+          data.stack.length > 0 && (
+            <div class="project-meta-item">
+              <span class="meta-label">Stack</span>
+              <p>{data.stack.join(' · ')}</p>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </header>
+
+  {
+    data.cover && (
+      <img class="site-shell project-cover" src={data.cover} alt={`${data.title} 项目封面`} />
+    )
+  }
+
+  <div class="site-shell project-detail-layout">
+    <article class="prose">
+      <Content />
+      {
+        data.gallery.length > 0 && (
+          <section class="project-gallery" aria-labelledby="project-gallery-title">
+            <h2 id="project-gallery-title">项目图集</h2>
+            <div class="project-gallery-grid">
+              {data.gallery.map((image, index) => (
+                <figure>
+                  <img
+                    src={image}
+                    alt={`${data.title} 项目图片 ${index + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </article>
+    <aside class="project-side">
+      {
+        data.highlights.length > 0 && (
+          <>
+            <h2>Project Highlights</h2>
+            <ul class="highlight-list">
+              {data.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      {
+        data.tags.length > 0 && (
+          <>
+            <h2>Keywords</h2>
+            <ul class="tag-list">
+              {data.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      {
+        projectLinks.length > 0 && (
+          <div class="project-links">
+            {projectLinks.map((link) => (
+              <a class="button button-secondary" href={link.href}>
+                {link.label} ↗
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </aside>
+  </div>
+</BaseLayout>

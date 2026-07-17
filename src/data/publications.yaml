@@ -1,0 +1,22 @@
+- id: carrier-aircraft-cause-generation
+  title: 大小模型协同驱动的船舰舰载机起降特情诱因生成方法
+  journal: 中国舰船研究
+  level: 中国科协 T1
+  note: 封面文章
+  role: 学生第二作者
+  status: Published
+  summary: 提出面向舰载机起降特情的多智能体诱因生成框架，结合检索增强、样本筛选与偏好优化，提升复杂场景生成结果的真实性与合理性。
+- id: carrier-aircraft-decision-support
+  title: 大语言模型驱动的舰载机起降特情案例智能推演与决策支持
+  journal: 中国舰船研究
+  level: 中国科协 T1
+  role: 学生第二作者
+  status: Published
+  summary: 设计面向应急决策的复杂特情事件推演框架，通过多轮状态生成、策略筛选和结果分析，实现特情案例的完整推演与辅助决策。
+- id: ipse
+  title: 'IPSE: An Integrated System for Generative Planning and High-Fidelity Evaluation'
+  journal: Neural Networks
+  level: CCF-B
+  role: 第一作者
+  status: Under Review / 在投
+  summary: 构建多智能体驱动的任务规划与高保真评测系统，实现从方案生成、对抗仿真到量化反馈的闭环验证。

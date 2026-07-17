@@ -1,0 +1,104 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisibleProjects } from '../../lib/content';
+
+const projects = await getVisibleProjects();
+const statuses = [...new Set(projects.flatMap((project) => project.data.status ?? []))];
+const categories = [...new Set(projects.flatMap((project) => project.data.categories))];
+---
+
+<BaseLayout
+  title="项目档案 — ZGLab"
+  description="黄志高的大模型、Agent、RAG、多智能体与 AI 工程项目档案。"
+>
+  <header class="site-shell page-hero">
+    <div class="page-hero-copy">
+      <p class="page-kicker">SYSTEM ARCHIVE / PROJECTS</p>
+      <h1>项目档案</h1>
+      <p>记录问题定义、工程路径、技术栈与评测方法。新增项目只需添加一份 Markdown 文件。</p>
+    </div>
+    <div class="page-hero-meta">
+      <p>Total Systems <strong>{String(projects.length).padStart(2, '0')}</strong></p>
+      <p>Collection <strong>Astro Content</strong></p>
+      <p>Build Mode <strong>Static</strong></p>
+    </div>
+  </header>
+
+  <section class="page-section">
+    <div class="site-shell">
+      <div class="filter-bar" role="group" aria-label="项目筛选">
+        <button
+          class="filter-button"
+          type="button"
+          data-filter-type="all"
+          data-filter="all"
+          aria-pressed="true"
+        >
+          全部 / {projects.length}
+        </button>
+        {
+          statuses.map((status) => (
+            <button
+              class="filter-button"
+              type="button"
+              data-filter-type="status"
+              data-filter={status}
+              aria-pressed="false"
+            >
+              {status}
+            </button>
+          ))
+        }
+        {
+          categories.map((category) => (
+            <button
+              class="filter-button"
+              type="button"
+              data-filter-type="category"
+              data-filter={category.toLowerCase()}
+              aria-pressed="false"
+            >
+              {category}
+            </button>
+          ))
+        }
+      </div>
+      {
+        projects.length > 0 ? (
+          <ol class="project-list" aria-live="polite">
+            {projects.map((project, index) => (
+              <li>
+                <ProjectCard project={project} variant="list" index={index + 1} />
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="empty-state">当前没有可见项目。</p>
+        )
+      }
+    </div>
+  </section>
+
+  <script>
+    const buttons = [...document.querySelectorAll<HTMLButtonElement>('.filter-button')];
+    const cards = [...document.querySelectorAll<HTMLElement>('.project-card-list')];
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+
+        const filter = button.dataset.filter ?? 'all';
+        const type = button.dataset.filterType ?? 'all';
+
+        cards.forEach((card) => {
+          const matchesStatus = card.dataset.status === filter;
+          const cardCategories = (card.dataset.categories ?? '').split('|');
+          const matchesCategory = cardCategories.includes(filter);
+          card.parentElement!.hidden =
+            type !== 'all' && !(type === 'status' ? matchesStatus : matchesCategory);
+        });
+      });
+    });
+  </script>
+</BaseLayout>

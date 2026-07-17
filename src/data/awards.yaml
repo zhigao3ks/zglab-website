@@ -1,0 +1,12 @@
+- id: acm-mm-2025-mirage
+  name: ACM MM 2025 MIRAGE Challenge
+  task: 复杂场景图像理解
+  result: 团队第三名
+  level: CCF-A 会议相关挑战赛
+  summary: 面向复杂场景图像理解任务，设计动态数据训练流程和基于置信度与思维链的多智能体交互框架。
+- id: icme-2025-inova
+  name: ICME 2025 Inova Challenge
+  task: 多模态交错指令理解
+  result: 团队第四名
+  level: CCF-B 会议相关挑战赛
+  summary: 构建多模型集成与多任务推理框架，完成多个优势模型的结果融合。

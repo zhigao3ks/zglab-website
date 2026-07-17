@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 760" role="img" aria-labelledby="title desc">
+  <title id="title">黄志高的抽象 ZG 头像</title>
+  <desc id="desc">以 ZG 字母结构、人物侧影和拓扑节点构成的抽象头像</desc>
+  <rect width="640" height="760" rx="24" fill="#161c21"/>
+  <path d="M72 90h302L118 420h290" fill="none" stroke="#d9d5ca" stroke-width="34" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <path d="M520 160c-49-58-145-69-218-28-88 50-115 170-61 259 39 65 112 98 178 86v-93H330" fill="none" stroke="#78b7aa" stroke-width="34" stroke-linecap="square"/>
+  <path d="M271 248c-33 21-54 58-54 100 0 55 37 102 87 116l-13 80c-5 32-28 59-58 71l-76 30" fill="none" stroke="#d9d5ca" stroke-width="18" stroke-linecap="round"/>
+  <path d="M405 469c2 70 32 125 90 166l58 40M309 542c40 18 83 20 126 5" fill="none" stroke="#78b7aa" stroke-width="14" stroke-linecap="round"/>
+  <g fill="#e4b66d">
+    <circle cx="72" cy="90" r="9"/>
+    <circle cx="520" cy="160" r="9"/>
+    <circle cx="553" cy="675" r="9"/>
+    <circle cx="157" cy="645" r="9"/>
+  </g>
+  <g fill="none" stroke="#53616a" stroke-width="3">
+    <path d="M72 90 217 348 157 645M520 160 405 469 553 675"/>
+    <circle cx="217" cy="348" r="12"/>
+    <circle cx="405" cy="469" r="12"/>
+  </g>
+  <path d="M72 704h496" stroke="#303a41" stroke-width="2"/>
+  <text x="72" y="735" fill="#78858c" font-family="ui-monospace, monospace" font-size="18" letter-spacing="5">ZHIGAO / LAB PORTRAIT 01</text>
+</svg>

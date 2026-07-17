@@ -1,0 +1,65 @@
+---
+import StatusPill from '../components/StatusPill.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ideas } from '../lib/data';
+import { ideaStatusLabels } from '../lib/status';
+
+const visibleIdeas = ideas.filter((idea) => idea.visible);
+---
+
+<BaseLayout
+  title="Idea Pipeline — ZGLab"
+  description="ZGLab 的未来项目想法、探索方向与生命周期状态。"
+>
+  <header class="site-shell page-hero">
+    <div class="page-hero-copy">
+      <p class="page-kicker">IDEA PIPELINE / LIFECYCLE</p>
+      <h1>想法</h1>
+      <p>想法不是待办清单，而是项目生命周期的入口。每条记录都保留明确状态与主题标签。</p>
+    </div>
+    <div class="page-hero-meta">
+      <p>Visible Ideas <strong>{String(visibleIdeas.length).padStart(2, '0')}</strong></p>
+      <p>Lifecycle <strong>Exploring → Online</strong></p>
+      <p>Source <strong>ideas.yaml</strong></p>
+    </div>
+  </header>
+
+  <section class="page-section">
+    <div class="site-shell">
+      {
+        visibleIdeas.length > 0 ? (
+          <div class="ideas-full-grid">
+            {visibleIdeas.map((idea, index) => (
+              <article class="idea-full-card">
+                <div>
+                  <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+                  <div style="margin-top: 1rem">
+                    <StatusPill status={idea.status} label={ideaStatusLabels[idea.status]} />
+                  </div>
+                </div>
+                <div>
+                  <h2>{idea.title}</h2>
+                  <p>{idea.summary}</p>
+                  {idea.tags.length > 0 && (
+                    <ul class="tag-list">
+                      {idea.tags.map((tag) => (
+                        <li>{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {idea.relatedProject && (
+                    <a class="text-link" href={`/projects/${idea.relatedProject}/`}>
+                      关联项目 ↗
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="empty-state">当前没有公开想法。</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

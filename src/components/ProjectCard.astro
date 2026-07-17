@@ -1,0 +1,56 @@
+---
+import type { Project } from '../lib/content';
+import { projectStatusLabels } from '../lib/status';
+import ArrowIcon from './ArrowIcon.astro';
+import StatusPill from './StatusPill.astro';
+
+interface Props {
+  project: Project;
+  variant?: 'large' | 'compact' | 'list';
+  index?: number;
+}
+
+const { project, variant = 'compact', index = 1 } = Astro.props;
+const { data } = project;
+const statusLabel = data.status ? projectStatusLabels[data.status] : undefined;
+---
+
+<article
+  class:list={['project-card', `project-card-${variant}`]}
+  data-status={data.status}
+  data-categories={data.categories.map((item) => item.toLowerCase()).join('|')}
+>
+  <div class="project-card-topline">
+    <span class="project-number">{String(index).padStart(2, '0')}</span>
+    {data.status && statusLabel && <StatusPill status={data.status} label={statusLabel} />}
+  </div>
+
+  <div class="project-card-content">
+    {data.categories.length > 0 && <p class="project-categories">{data.categories.join(' · ')}</p>}
+    <h3><a href={`/projects/${data.slug}/`}>{data.title}</a></h3>
+    <p>{data.summary}</p>
+  </div>
+
+  {
+    data.stack.length > 0 && (
+      <ul class="tag-list" aria-label="技术栈">
+        {data.stack.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  <div class="project-card-footer">
+    <a class="card-link" href={`/projects/${data.slug}/`}>
+      查看项目档案 <ArrowIcon />
+    </a>
+    {
+      data.progress !== undefined && (
+        <span class="project-progress" aria-label={`项目进度 ${data.progress}%`}>
+          {data.progress}%
+        </span>
+      )
+    }
+  </div>
+</article>

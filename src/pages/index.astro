@@ -1,0 +1,329 @@
+---
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVisibleProjects } from '../lib/content';
+import { awards, ideas, now, profile, publications, timeline } from '../lib/data';
+import { ideaStatusLabels } from '../lib/status';
+
+const projects = await getVisibleProjects();
+const representative = projects.find((project) => project.data.featured) ?? projects[0];
+const secondaryProjects = projects
+  .filter((project) => project.id !== representative?.id)
+  .slice(0, 3);
+const pipelineStatuses = ['exploring', 'planned', 'building', 'online'] as const;
+const visibleIdeas = ideas.filter((idea) => idea.visible);
+const currentProject = projects.find((project) => project.data.slug === now.currentProject);
+---
+
+<BaseLayout>
+  <section class="site-shell home-hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="hero-overline">
+        <span>LAB PROFILE / 001</span>
+        <span>{profile.role}</span>
+      </p>
+      <h1 id="hero-title" class="hero-name">{profile.name}</h1>
+      <p class="hero-role">
+        <span>{profile.role}</span>
+        {profile.school && <span class="school-tag">{profile.school}</span>}
+      </p>
+      <p class="hero-headline">{profile.headline}</p>
+      <p class="hero-intro">{profile.intro}</p>
+      <p class="hero-status">{profile.status} · {profile.statusEn}</p>
+      <div class="hero-actions">
+        <a class="button" href="/projects">查看项目</a>
+        {
+          profile.github && (
+            <a class="button button-secondary" href={profile.github}>
+              GitHub ↗
+            </a>
+          )
+        }
+        {
+          profile.email && (
+            <a class="button button-secondary" href={`mailto:${profile.email}`}>
+              联系我
+            </a>
+          )
+        }
+      </div>
+    </div>
+    {
+      profile.avatar && (
+        <figure class="hero-portrait">
+          <img
+            src={profile.avatar}
+            alt={profile.avatarAlt ?? ''}
+            width="640"
+            height="760"
+            decoding="async"
+          />
+          <figcaption class="portrait-caption">
+            <span>ABSTRACT ID</span>
+            <span>ZG / HZG</span>
+          </figcaption>
+        </figure>
+      )
+    }
+  </section>
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="01"
+        eyebrow="Now"
+        title="Current Focus"
+        description="当前正在推进的工程问题、近期更新与工作原则。"
+      />
+      <div class="focus-layout">
+        <div class="focus-primary">
+          <p class="eyebrow">{now.eyebrow}</p>
+          <h3>{now.title}</h3>
+          <p>{now.problem}</p>
+          {
+            currentProject && (
+              <a class="text-link" href={`/projects/${currentProject.data.slug}/`}>
+                打开当前项目档案 ↗
+              </a>
+            )
+          }
+        </div>
+        <aside class="focus-aside" aria-label="当前重点元数据">
+          <div class="focus-meta">
+            <span class="meta-label">Recent Update</span>
+            <p>{now.recentUpdate}</p>
+          </div>
+          <div class="focus-meta">
+            <span class="meta-label">Working Principles</span>
+            <ul class="principle-list">
+              {now.principles.map((principle) => <li>{principle}</li>)}
+            </ul>
+          </div>
+          {
+            currentProject && currentProject.data.stack.length > 0 && (
+              <div class="focus-meta">
+                <span class="meta-label">Active Stack</span>
+                <ul class="principle-list">
+                  {currentProject.data.stack.slice(0, 6).map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {
+    representative && (
+      <section class="home-section">
+        <div class="site-shell">
+          <SectionHeader
+            index="02"
+            eyebrow="Selected Systems"
+            title="Featured Work"
+            description="把研究方法、模型能力和基础设施收束为可以运行与评测的工程系统。"
+            href="/projects"
+            linkLabel="项目索引"
+          />
+          <div class="featured-layout">
+            <ProjectCard project={representative} variant="large" index={1} />
+            {secondaryProjects.length > 0 && (
+              <div class="featured-secondary">
+                {secondaryProjects.map((project, index) => (
+                  <ProjectCard project={project} variant="compact" index={index + 2} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="03"
+        eyebrow="Research Map"
+        title="Research Threads"
+        description="围绕智能系统从能力构建、知识增强到协同执行和工程验证的持续探索。"
+        href="/research"
+        linkLabel="研究档案"
+      />
+      <div class="thread-grid">
+        {
+          profile.researchThreads.map((thread, index) => (
+            <article class="thread-item">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{thread.title}</h3>
+                <p>{thread.summary}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="04"
+        eyebrow="Research Output"
+        title="Publications"
+        description="论文状态、作者角色和成果简介均以当前内容数据为准。"
+        href="/research#publications"
+        linkLabel="完整研究记录"
+      />
+      <ol class="publication-list">
+        {
+          publications.map((publication, index) => (
+            <li class="publication-item">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{publication.title}</h3>
+                <p>{publication.summary}</p>
+              </div>
+              <div class="publication-meta">
+                <div class="publication-meta-row">
+                  <>
+                    <span>Journal</span>
+                    <span>{publication.journal}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <>
+                    <span>Role</span>
+                    <span>{publication.role}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <>
+                    <span>Level</span>
+                    <span>{publication.level}</span>
+                  </>
+                </div>
+                <div class="publication-meta-row">
+                  <span>Status</span>
+                  <span
+                    class:list={{
+                      'publication-status-review': publication.status.includes('Under Review'),
+                    }}
+                  >
+                    {publication.status}
+                  </span>
+                </div>
+                {publication.note && (
+                  <div class="publication-meta-row">
+                    <span>Note</span>
+                    <span>{publication.note}</span>
+                  </div>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="05"
+        eyebrow="Competition"
+        title="Awards"
+        description="多模态理解任务中的团队竞赛成果与方法实践。"
+        href="/research#awards"
+        linkLabel="竞赛详情"
+      />
+      <ol class="award-list">
+        {
+          awards.map((award) => (
+            <li class="award-item">
+              <strong class="award-rank">{award.result.replace('团队', '')}</strong>
+              <div>
+                <p class="award-task">{award.task}</p>
+                <h3>{award.name}</h3>
+                <p>{award.summary}</p>
+              </div>
+              <p class="award-level">{award.level}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="06"
+        eyebrow="Lifecycle"
+        title="Idea Pipeline"
+        description="从探索、规划、构建到上线，以明确状态管理未来项目。"
+        href="/ideas"
+        linkLabel="查看想法"
+      />
+      <div class="idea-columns">
+        {
+          pipelineStatuses.map((status) => {
+            const statusIdeas = visibleIdeas.filter((idea) => idea.status === status);
+            return (
+              <section class="idea-column" aria-labelledby={`idea-${status}`}>
+                <header class="idea-column-header">
+                  <h3 id={`idea-${status}`}>{ideaStatusLabels[status]}</h3>
+                  <span class="idea-count">{String(statusIdeas.length).padStart(2, '0')}</span>
+                </header>
+                {statusIdeas.map((idea) => (
+                  <article class="idea-card">
+                    <h4>{idea.title}</h4>
+                    <p>{idea.summary}</p>
+                    {idea.tags.length > 0 && (
+                      <ul class="mini-tags">
+                        {idea.tags.map((tag) => (
+                          <li>{tag}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                ))}
+              </section>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="07"
+        eyebrow="Lab Log"
+        title="Timeline"
+        description="网站、项目和研究工作的关键节点。"
+      />
+      <ol class="timeline-list">
+        {
+          timeline
+            .filter((entry) => entry.visible)
+            .map((entry) => (
+              <li class="timeline-item">
+                <span class="timeline-marker">{entry.marker}</span>
+                <div class="timeline-content">
+                  <h3>{entry.title}</h3>
+                  <p>{entry.summary}</p>
+                </div>
+              </li>
+            ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

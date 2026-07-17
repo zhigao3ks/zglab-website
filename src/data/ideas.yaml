@@ -1,0 +1,35 @@
+- id: technical-blog
+  title: 个人技术博客
+  summary: 系统整理研究笔记、工程实践与长期复盘。
+  status: planned
+  createdAt: 2026-07-17
+  tags: [Writing, Knowledge]
+  visible: true
+- id: browser-tools
+  title: 浏览器端轻量工具集
+  summary: 汇集无需安装、随取随用的轻量工程工具。
+  status: exploring
+  createdAt: 2026-07-17
+  tags: [Web, Tools]
+  visible: true
+- id: paper-review-assistant
+  title: AI 论文审校助手
+  summary: 探索面向论文结构、论证与表达一致性的辅助审校流程。
+  status: exploring
+  createdAt: 2026-07-17
+  tags: [AI, Research]
+  visible: true
+- id: engineering-knowledge-base
+  title: 工程知识与踩坑数据库
+  summary: 将分散的工程问题沉淀为可检索、可复用的解决方案。
+  status: planned
+  createdAt: 2026-07-17
+  tags: [Knowledge, Engineering]
+  visible: true
+- id: architecture-diagram-generator
+  title: 项目架构图生成器
+  summary: 从结构化项目描述生成清晰、可维护的架构视图。
+  status: exploring
+  createdAt: 2026-07-17
+  tags: [Visualization, Architecture]
+  visible: true

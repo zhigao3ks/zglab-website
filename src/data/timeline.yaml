@@ -1,0 +1,18 @@
+- id: zglab-rebuild
+  marker: '2026.07'
+  title: ZGLab 信息架构重构
+  summary: 将个人主页重构为配置驱动的数字研究档案与工程实验室门户。
+  type: lab
+  visible: true
+- id: current-agentic-system
+  marker: 当前
+  title: Agentic 企业知识问答系统
+  summary: 持续完善混合检索、工具编排、事实校验与自动化评测闭环。
+  type: project
+  visible: true
+- id: challenges-2025
+  marker: '2025'
+  title: 多模态挑战赛实践
+  summary: 在 ACM MM 2025 MIRAGE 与 ICME 2025 Inova Challenge 中完成多智能体与多模型融合实践。
+  type: research
+  visible: true

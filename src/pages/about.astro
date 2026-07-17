@@ -1,0 +1,144 @@
+---
+import SectionHeader from '../components/SectionHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile, skills, timeline } from '../lib/data';
+---
+
+<BaseLayout
+  title="关于黄志高 — ZGLab"
+  description="黄志高的个人介绍、研究方向、技能结构、联系方式与实验室时间线。"
+>
+  <header class="site-shell page-hero">
+    <div class="page-hero-copy">
+      <p class="page-kicker">PROFILE / HUANG ZHIGAO</p>
+      <h1>关于</h1>
+      <p>{profile.intro}</p>
+    </div>
+    <div class="page-hero-meta">
+      <p>
+        Identity
+        <strong>
+          {profile.role}
+          {profile.school && <span class="school-tag school-tag-meta">{profile.school}</span>}
+        </strong>
+      </p>
+      <p>Status <strong>{profile.status} · {profile.statusEn}</strong></p>
+      <p>Focus <strong>{profile.headline}</strong></p>
+    </div>
+  </header>
+
+  <section class="page-section">
+    <div class="site-shell about-intro">
+      <aside class="about-contact-panel">
+        {
+          profile.avatar && (
+            <img
+              src={profile.avatar}
+              alt={profile.avatarAlt ?? ''}
+              width="640"
+              height="760"
+              loading="lazy"
+            />
+          )
+        }
+        <ul class="contact-list">
+          {
+            profile.email && (
+              <li>
+                <>
+                  <span class="meta-label">Email</span>
+                  <br />
+                  <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                </>
+              </li>
+            )
+          }
+          {
+            profile.github && (
+              <li>
+                <>
+                  <span class="meta-label">GitHub</span>
+                  <br />
+                  <a href={profile.github}>{profile.github.replace('https://', '')} ↗</a>
+                </>
+              </li>
+            )
+          }
+          {
+            profile.website && (
+              <li>
+                <>
+                  <span class="meta-label">Website</span>
+                  <br />
+                  <a href={profile.website}>zglab.fun</a>
+                </>
+              </li>
+            )
+          }
+        </ul>
+      </aside>
+      <article class="about-bio">
+        <p class="eyebrow">Biography</p>
+        {profile.bio.map((paragraph) => <p>{paragraph}</p>)}
+        <ul class="direction-list" aria-label="主要方向">
+          {profile.directions.map((direction) => <li>{direction}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="01"
+        eyebrow="Capabilities"
+        title="技能结构"
+        description="按智能系统、模型方法与工程基础设施组织的能力索引。"
+      />
+      <ol class="skill-list">
+        {
+          skills.map((skill, index) => (
+            <li class="skill-item">
+              <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{skill.title}</h3>
+                <p>{skill.description}</p>
+              </div>
+              <ul class="skill-keywords">
+                {skill.keywords.map((keyword) => (
+                  <li>{keyword}</li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="site-shell">
+      <SectionHeader
+        index="02"
+        eyebrow="Lab Log"
+        title="时间线"
+        description="网站、项目与研究实践中的关键节点。"
+      />
+      <ol class="timeline-list">
+        {
+          timeline
+            .filter((entry) => entry.visible)
+            .map((entry) => (
+              <li class="timeline-item">
+                <span class="timeline-marker">{entry.marker}</span>
+                <div class="timeline-content">
+                  <h3>{entry.title}</h3>
+                  <p>{entry.summary}</p>
+                </div>
+              </li>
+            ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
