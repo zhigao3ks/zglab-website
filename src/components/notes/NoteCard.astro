@@ -1,0 +1,47 @@
+---
+import type { Note } from '../../lib/notes';
+import { estimateReadingMinutes, getNoteSlug, noteCategoryLabels } from '../../lib/notes';
+
+interface Props {
+  note: Note;
+  index: number;
+}
+
+const { note, index } = Astro.props;
+const { data } = note;
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+const searchText = [data.title, data.summary, data.category, ...data.tags].join(' ').toLowerCase();
+---
+
+<article
+  class="note-card"
+  data-note-card
+  data-category={data.category}
+  data-search={searchText}
+>
+  <a href={`/notes/${getNoteSlug(note)}/`} aria-label={`阅读：${data.title}`}>
+    <div class="note-card-topline">
+      <span>{String(index).padStart(2, '0')}</span>
+      <span>{noteCategoryLabels[data.category] ?? data.category}</span>
+    </div>
+    <h2>{data.title}</h2>
+    <p>{data.summary}</p>
+    <div class="note-card-meta">
+      <time datetime={data.date.toISOString()}>{dateFormatter.format(data.date)}</time>
+      <span>{estimateReadingMinutes(note.body)} 分钟阅读</span>
+    </div>
+    {
+      data.tags.length > 0 && (
+        <ul class="note-tag-list" aria-label="文章标签">
+          {data.tags.slice(0, 4).map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+  </a>
+</article>
