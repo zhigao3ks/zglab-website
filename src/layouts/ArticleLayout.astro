@@ -1,0 +1,127 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { noteCategoryLabels } from '../lib/notes';
+import '../styles/notes.css';
+
+interface Props {
+  title: string;
+  summary: string;
+  date: Date;
+  updated?: Date;
+  category: string;
+  tags: string[];
+  readingMinutes: number;
+  sourceUrl: string;
+  headings: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const {
+  title,
+  summary,
+  date,
+  updated,
+  category,
+  tags,
+  readingMinutes,
+  sourceUrl,
+  headings,
+} = Astro.props;
+const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 3);
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — ZGLab Notes`} description={summary} ogType="article">
+  <Fragment slot="head">
+    <meta property="article:published_time" content={date.toISOString()} />
+    {updated && <meta property="article:modified_time" content={updated.toISOString()} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
+  </Fragment>
+
+  <header class="site-shell note-detail-hero">
+    <a class="note-back" href="/notes">← 返回笔记索引</a>
+    <p class="page-kicker">{noteCategoryLabels[category] ?? category}</p>
+    <h1>{title}</h1>
+    <p class="note-lead">{summary}</p>
+    <div class="note-byline" aria-label="文章信息">
+      <time datetime={date.toISOString()}>发布于 {dateFormatter.format(date)}</time>
+      {updated && updated.getTime() !== date.getTime() && (
+        <time datetime={updated.toISOString()}>更新于 {dateFormatter.format(updated)}</time>
+      )}
+      <span>{readingMinutes} 分钟阅读</span>
+    </div>
+  </header>
+
+  <div class="site-shell note-detail-layout">
+    <article class="note-prose prose">
+      <slot />
+    </article>
+    <aside class="note-side" aria-label="文章辅助信息">
+      {
+        tableOfContents.length >= 2 && (
+          <nav class="note-toc" aria-label="文章目录">
+            <p class="note-side-title">On this page</p>
+            <ol>
+              {tableOfContents.map((heading) => (
+                <li data-depth={String(heading.depth)}>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+
+      {tags.length > 0 && (
+        <section>
+          <p class="note-side-title">Keywords</p>
+          <ul class="note-side-tags">
+            {tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+        </section>
+      )}
+
+      <a class="note-source-link" href={sourceUrl} target="_blank" rel="noreferrer">
+        查看 Markdown 源文件 ↗
+      </a>
+    </aside>
+  </div>
+
+  <div class="site-shell note-after">
+    <slot name="after" />
+  </div>
+
+  <script>
+    const mermaidBlocks = new Set<HTMLElement>();
+    document
+      .querySelectorAll<HTMLElement>('pre[data-language="mermaid"], pre.language-mermaid')
+      .forEach((block) => mermaidBlocks.add(block));
+    document.querySelectorAll<HTMLElement>('code.language-mermaid').forEach((code) => {
+      if (code.parentElement) mermaidBlocks.add(code.parentElement);
+    });
+
+    if (mermaidBlocks.size > 0) {
+      const diagrams = [...mermaidBlocks].map((block) => {
+        const container = document.createElement('div');
+        container.className = 'mermaid';
+        container.textContent = block.textContent ?? '';
+        block.replaceWith(container);
+        return container;
+      });
+
+      import(/* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
+        .then(({ default: mermaid }) => {
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'strict',
+            theme: 'dark',
+          });
+          return mermaid.run({ nodes: diagrams });
+        })
+        .catch((error) => console.warn('[notes] Mermaid 渲染失败，保留文章其他内容。', error));
+    }
+  </script>
+</BaseLayout>
