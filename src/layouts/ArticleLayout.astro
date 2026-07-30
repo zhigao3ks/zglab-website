@@ -63,7 +63,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
       {
         tableOfContents.length >= 2 && (
           <nav class="note-toc" aria-label="文章目录">
-            <p class="note-side-title">On this page</p>
+            <p class="note-side-title">本文目录</p>
             <ol>
               {tableOfContents.map((heading) => (
                 <li data-depth={String(heading.depth)}>
@@ -77,7 +77,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 
       {tags.length > 0 && (
         <section>
-          <p class="note-side-title">Keywords</p>
+          <p class="note-side-title">关键词</p>
           <ul class="note-side-tags">
             {tags.map((tag) => <li>{tag}</li>)}
           </ul>
@@ -85,7 +85,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
       )}
 
       <a class="note-source-link" href={sourceUrl} target="_blank" rel="noreferrer">
-        查看 Markdown 源文件 ↗
+        在 GitHub 查看原文 ↗
       </a>
     </aside>
   </div>
