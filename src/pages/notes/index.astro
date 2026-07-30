@@ -1,0 +1,134 @@
+---
+import NoteCard from '../../components/notes/NoteCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedNotes, noteCategoryLabels } from '../../lib/notes';
+import '../../styles/notes.css';
+
+const notes = await getPublishedNotes();
+const categoryCounts = notes.reduce<Record<string, number>>((counts, note) => {
+  counts[note.data.category] = (counts[note.data.category] ?? 0) + 1;
+  return counts;
+}, {});
+const categories = Object.keys(categoryCounts).sort(
+  (a, b) => Object.keys(noteCategoryLabels).indexOf(a) - Object.keys(noteCategoryLabels).indexOf(b),
+);
+const latestDate = notes[0]?.data.updated ?? notes[0]?.data.date;
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+---
+
+<BaseLayout
+  title="笔记与实践 — ZGLab"
+  description="关于 AI 工程、Agent、软件开发、系统设计和项目复盘的长期技术笔记。"
+>
+  <header class="site-shell page-hero note-index-hero">
+    <div class="page-hero-copy">
+      <p class="page-kicker">KNOWLEDGE ARCHIVE / NOTES</p>
+      <h1>笔记与实践</h1>
+      <p>把项目中的真实问题、技术决策和可复用方法整理成能够长期维护的公开知识。</p>
+    </div>
+    <div class="page-hero-meta">
+      <p>Total Articles <strong>{String(notes.length).padStart(2, '0')}</strong></p>
+      <p>Categories <strong>{String(categories.length).padStart(2, '0')}</strong></p>
+      <p>
+        Latest Update
+        <strong>{latestDate ? dateFormatter.format(latestDate) : 'Waiting'}</strong>
+      </p>
+      <a class="note-rss-link" href="/notes/rss.xml">RSS Feed ↗</a>
+    </div>
+  </header>
+
+  <section class="page-section note-index-section">
+    <div class="site-shell">
+      <div class="note-controls">
+        <div class="filter-bar" role="group" aria-label="笔记分类筛选">
+          <button
+            class="filter-button"
+            type="button"
+            data-note-filter="all"
+            aria-pressed="true"
+          >
+            全部 / {notes.length}
+          </button>
+          {
+            categories.map((category) => (
+              <button
+                class="filter-button"
+                type="button"
+                data-note-filter={category}
+                aria-pressed="false"
+              >
+                {noteCategoryLabels[category] ?? category} / {categoryCounts[category]}
+              </button>
+            ))
+          }
+        </div>
+        <label class="note-search">
+          <span>搜索笔记</span>
+          <input type="search" data-note-search placeholder="标题、摘要或标签" autocomplete="off" />
+        </label>
+      </div>
+
+      {
+        notes.length > 0 ? (
+          <ol class="note-grid" data-note-list aria-live="polite">
+            {notes.map((note, index) => (
+              <li>
+                <NoteCard note={note} index={index + 1} />
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="note-empty-state">
+            <p class="page-kicker">NO PUBLISHED NOTES</p>
+            <h2>内容结构已经就绪</h2>
+            <p>
+              当前没有标记为 <code>status: published</code> 的文章。草稿仍保留在 notes
+              仓库中，不会被意外发布。
+            </p>
+          </div>
+        )
+      }
+      <p class="note-no-results" data-note-no-results hidden>没有匹配当前筛选条件的文章。</p>
+    </div>
+  </section>
+
+  <script>
+    const filterButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-note-filter]')];
+    const searchInput = document.querySelector<HTMLInputElement>('[data-note-search]');
+    const cards = [...document.querySelectorAll<HTMLElement>('[data-note-card]')];
+    const noResults = document.querySelector<HTMLElement>('[data-note-no-results]');
+    let activeCategory = 'all';
+
+    const applyFilters = () => {
+      const query = searchInput?.value.trim().toLowerCase() ?? '';
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const categoryMatches =
+          activeCategory === 'all' || card.dataset.category === activeCategory;
+        const searchMatches = !query || (card.dataset.search ?? '').includes(query);
+        const show = categoryMatches && searchMatches;
+        const listItem = card.closest('li');
+        if (listItem) listItem.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      if (noResults) noResults.hidden = cards.length === 0 || visible > 0;
+    };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeCategory = button.dataset.noteFilter ?? 'all';
+        filterButtons.forEach((item) =>
+          item.setAttribute('aria-pressed', String(item === button)),
+        );
+        applyFilters();
+      });
+    });
+    searchInput?.addEventListener('input', applyFilters);
+  </script>
+</BaseLayout>
