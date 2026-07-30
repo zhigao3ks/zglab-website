@@ -108,7 +108,7 @@ const collapsedRange = `02–${String(secondaryItems.length + 1).padStart(2, '0'
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && disclosure?.open) {
       disclosure.open = false;
-      disclosure.querySelector('summary')?.focus();
+      disclosure.querySelector<HTMLElement>('summary')?.focus();
     }
   });
 </script>
