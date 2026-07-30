@@ -1,4 +1,5 @@
 ---
+import PageIntroDisclosure from '../../components/PageIntroDisclosure.astro';
 import NoteCard from '../../components/notes/NoteCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublishedNotes, noteCategoryLabels } from '../../lib/notes';
@@ -24,22 +25,24 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   title="笔记与实践 — ZGLab"
   description="项目中的正式问题、技术决策和可复用方法整理。"
 >
-  <header class="site-shell page-hero note-index-hero">
-    <div class="page-hero-copy">
-      <p class="page-kicker">KNOWLEDGE ARCHIVE / NOTES</p>
-      <h1>笔记与实践</h1>
-      <p>项目中的正式问题、技术决策和可复用方法整理。</p>
-    </div>
-    <div class="page-hero-meta">
-      <p>文章数量 <strong>{String(notes.length).padStart(2, '0')}</strong></p>
-      <p>内容分类 <strong>{String(categories.length).padStart(2, '0')}</strong></p>
-      <p>
-        最近更新
-        <strong>{latestDate ? dateFormatter.format(latestDate) : '即将更新'}</strong>
-      </p>
-      <a class="note-rss-link" href="/notes/rss.xml">订阅更新 ↗</a>
-    </div>
-  </header>
+  <PageIntroDisclosure index="06" label="笔记概览">
+    <header class="site-shell page-hero note-index-hero">
+      <div class="page-hero-copy">
+        <p class="page-kicker">KNOWLEDGE ARCHIVE / NOTES</p>
+        <h1>笔记与实践</h1>
+        <p>项目中的正式问题、技术决策和可复用方法整理。</p>
+      </div>
+      <div class="page-hero-meta">
+        <p>文章数量 <strong>{String(notes.length).padStart(2, '0')}</strong></p>
+        <p>内容分类 <strong>{String(categories.length).padStart(2, '0')}</strong></p>
+        <p>
+          最近更新
+          <strong>{latestDate ? dateFormatter.format(latestDate) : '即将更新'}</strong>
+        </p>
+        <a class="note-rss-link" href="/notes/rss.xml">订阅更新 ↗</a>
+      </div>
+    </header>
+  </PageIntroDisclosure>
 
   <section class="page-section note-index-section">
     <div class="site-shell">
