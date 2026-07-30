@@ -24,6 +24,10 @@
   user-select: none;
 }
 
+.primary-nav > .home-nav-link {
+  border-bottom: 0 !important;
+}
+
 .primary-nav > .home-nav-link:hover,
 .primary-nav > .home-nav-link[aria-current='page'],
 .nav-disclosure > summary:hover,
