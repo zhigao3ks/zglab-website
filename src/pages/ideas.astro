@@ -8,19 +8,19 @@ const visibleIdeas = ideas.filter((idea) => idea.visible);
 ---
 
 <BaseLayout
-  title="Idea Pipeline — ZGLab"
-  description="ZGLab 的未来项目想法、探索方向与生命周期状态。"
+  title="想法与计划 — ZGLab"
+  description="记录未来项目的探索方向、目标与推进状态。"
 >
   <header class="site-shell page-hero">
     <div class="page-hero-copy">
       <p class="page-kicker">IDEA PIPELINE / LIFECYCLE</p>
       <h1>想法</h1>
-      <p>想法不是待办清单，而是项目生命周期的入口。每条记录都保留明确状态与主题标签。</p>
+      <p>记录值得继续探索的产品方向与研究命题，并按当前进展持续更新。</p>
     </div>
     <div class="page-hero-meta">
-      <p>Visible Ideas <strong>{String(visibleIdeas.length).padStart(2, '0')}</strong></p>
-      <p>Lifecycle <strong>Exploring → Online</strong></p>
-      <p>Source <strong>ideas.yaml</strong></p>
+      <p>想法数量 <strong>{String(visibleIdeas.length).padStart(2, '0')}</strong></p>
+      <p>推进阶段 <strong>探索 → 落地</strong></p>
+      <p>关注范围 <strong>AI · 工具 · 知识</strong></p>
     </div>
   </header>
 
@@ -57,7 +57,7 @@ const visibleIdeas = ideas.filter((idea) => idea.visible);
             ))}
           </div>
         ) : (
-          <p class="empty-state">当前没有公开想法。</p>
+          <p class="empty-state">新的想法正在整理中。</p>
         )
       }
     </div>
