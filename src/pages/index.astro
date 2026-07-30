@@ -89,13 +89,13 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
             )
           }
         </div>
-        <aside class="focus-aside" aria-label="当前重点元数据">
+        <aside class="focus-aside" aria-label="当前重点信息">
           <div class="focus-meta">
-            <span class="meta-label">Recent Update</span>
+            <span class="meta-label">近期进展</span>
             <p>{now.recentUpdate}</p>
           </div>
           <div class="focus-meta">
-            <span class="meta-label">Working Principles</span>
+            <span class="meta-label">工作原则</span>
             <ul class="principle-list">
               {now.principles.map((principle) => <li>{principle}</li>)}
             </ul>
@@ -103,7 +103,7 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
           {
             currentProject && currentProject.data.stack.length > 0 && (
               <div class="focus-meta">
-                <span class="meta-label">Active Stack</span>
+                <span class="meta-label">主要技术</span>
                 <ul class="principle-list">
                   {currentProject.data.stack.slice(0, 6).map((item) => (
                     <li>{item}</li>
@@ -176,7 +176,7 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
         index="04"
         eyebrow="Research Output"
         title="Publications"
-        description="论文状态、作者角色和成果简介均以当前内容数据为准。"
+        description="记录研究主题、作者角色与阶段性进展。"
         href="/research#publications"
         linkLabel="完整研究记录"
       />
@@ -192,24 +192,24 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
               <div class="publication-meta">
                 <div class="publication-meta-row">
                   <>
-                    <span>Journal</span>
+                    <span>期刊</span>
                     <span>{publication.journal}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
                   <>
-                    <span>Role</span>
+                    <span>角色</span>
                     <span>{publication.role}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
                   <>
-                    <span>Level</span>
+                    <span>级别</span>
                     <span>{publication.level}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
-                  <span>Status</span>
+                  <span>状态</span>
                   <span
                     class:list={{
                       'publication-status-review': publication.status.includes('Under Review'),
@@ -220,7 +220,7 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
                 </div>
                 {publication.note && (
                   <div class="publication-meta-row">
-                    <span>Note</span>
+                    <span>说明</span>
                     <span>{publication.note}</span>
                   </div>
                 )}
@@ -266,7 +266,7 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
         index="06"
         eyebrow="Lifecycle"
         title="Idea Pipeline"
-        description="从探索、规划、构建到上线，以明确状态管理未来项目。"
+        description="记录从初步探索到实际落地的项目构想与推进状态。"
         href="/ideas"
         linkLabel="查看想法"
       />
@@ -305,9 +305,9 @@ const currentProject = projects.find((project) => project.data.slug === now.curr
     <div class="site-shell">
       <SectionHeader
         index="07"
-        eyebrow="Lab Log"
+        eyebrow="Timeline"
         title="Timeline"
-        description="网站、项目和研究工作的关键节点。"
+        description="项目、研究与工程实践中的关键节点。"
       />
       <ol class="timeline-list">
         {
