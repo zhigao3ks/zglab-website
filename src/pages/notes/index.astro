@@ -22,22 +22,22 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 
 <BaseLayout
   title="笔记与实践 — ZGLab"
-  description="关于 AI 工程、Agent、软件开发、系统设计和项目复盘的长期技术笔记。"
+  description="项目中的正式问题、技术决策和可复用方法整理。"
 >
   <header class="site-shell page-hero note-index-hero">
     <div class="page-hero-copy">
       <p class="page-kicker">KNOWLEDGE ARCHIVE / NOTES</p>
       <h1>笔记与实践</h1>
-      <p>把项目中的真实问题、技术决策和可复用方法整理成能够长期维护的公开知识。</p>
+      <p>项目中的正式问题、技术决策和可复用方法整理。</p>
     </div>
     <div class="page-hero-meta">
-      <p>Total Articles <strong>{String(notes.length).padStart(2, '0')}</strong></p>
-      <p>Categories <strong>{String(categories.length).padStart(2, '0')}</strong></p>
+      <p>文章数量 <strong>{String(notes.length).padStart(2, '0')}</strong></p>
+      <p>内容分类 <strong>{String(categories.length).padStart(2, '0')}</strong></p>
       <p>
-        Latest Update
-        <strong>{latestDate ? dateFormatter.format(latestDate) : 'Waiting'}</strong>
+        最近更新
+        <strong>{latestDate ? dateFormatter.format(latestDate) : '即将更新'}</strong>
       </p>
-      <a class="note-rss-link" href="/notes/rss.xml">RSS Feed ↗</a>
+      <a class="note-rss-link" href="/notes/rss.xml">订阅更新 ↗</a>
     </div>
   </header>
 
@@ -83,12 +83,9 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
           </ol>
         ) : (
           <div class="note-empty-state">
-            <p class="page-kicker">NO PUBLISHED NOTES</p>
-            <h2>内容结构已经就绪</h2>
-            <p>
-              当前没有标记为 <code>status: published</code> 的文章。草稿仍保留在 notes
-              仓库中，不会被意外发布。
-            </p>
+            <p class="page-kicker">NOTES COMING SOON</p>
+            <h2>首批文章正在整理</h2>
+            <p>这里将持续发布项目复盘、技术决策与可复用方法。</p>
           </div>
         )
       }
