@@ -34,7 +34,7 @@ export const GET: APIRoute = async ({ site }) => {
   <channel>
     <title>ZGLab Notes</title>
     <link>${escapeXml(new URL('/notes/', baseUrl).toString())}</link>
-    <description>关于 AI 工程、Agent、软件开发、系统设计和项目复盘的长期技术笔记。</description>
+    <description>项目中的正式问题、技术决策和可复用方法整理。</description>
     <language>zh-CN</language>
     ${items}
   </channel>
