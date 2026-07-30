@@ -1,0 +1,27 @@
+---
+import '../styles/page-intro.css';
+
+interface Props {
+  index: string;
+  label: string;
+}
+
+const { index, label } = Astro.props;
+---
+
+<details class="page-intro-disclosure">
+  <summary class="site-shell page-intro-summary">
+    <span class="page-intro-summary-main">
+      <span class="page-intro-index">{index}</span>
+      <strong>{label}</strong>
+    </span>
+    <span class="page-intro-action">
+      <span class="page-intro-action-collapsed">展开概览</span>
+      <span class="page-intro-action-expanded">收起概览</span>
+      <span class="page-intro-chevron" aria-hidden="true"></span>
+    </span>
+  </summary>
+  <div class="page-intro-panel">
+    <slot />
+  </div>
+</details>
