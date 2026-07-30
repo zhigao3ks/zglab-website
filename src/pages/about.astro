@@ -1,4 +1,5 @@
 ---
+import PageIntroDisclosure from '../components/PageIntroDisclosure.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { profile, skills, timeline } from '../lib/data';
@@ -8,24 +9,26 @@ import { profile, skills, timeline } from '../lib/data';
   title="关于黄志高 — ZGLab"
   description="黄志高的个人介绍、研究方向、技能结构、联系方式与实践时间线。"
 >
-  <header class="site-shell page-hero">
-    <div class="page-hero-copy">
-      <p class="page-kicker">PROFILE / HUANG ZHIGAO</p>
-      <h1>关于</h1>
-      <p>{profile.intro}</p>
-    </div>
-    <div class="page-hero-meta">
-      <p>
-        身份
-        <strong>
-          {profile.role}
-          {profile.school && <span class="school-tag school-tag-meta">{profile.school}</span>}
-        </strong>
-      </p>
-      <p>状态 <strong>{profile.status} · {profile.statusEn}</strong></p>
-      <p>方向 <strong>{profile.headline}</strong></p>
-    </div>
-  </header>
+  <PageIntroDisclosure index="05" label="个人概览">
+    <header class="site-shell page-hero">
+      <div class="page-hero-copy">
+        <p class="page-kicker">PROFILE / HUANG ZHIGAO</p>
+        <h1>关于</h1>
+        <p>{profile.intro}</p>
+      </div>
+      <div class="page-hero-meta">
+        <p>
+          身份
+          <strong>
+            {profile.role}
+            {profile.school && <span class="school-tag school-tag-meta">{profile.school}</span>}
+          </strong>
+        </p>
+        <p>状态 <strong>{profile.status} · {profile.statusEn}</strong></p>
+        <p>方向 <strong>{profile.headline}</strong></p>
+      </div>
+    </header>
+  </PageIntroDisclosure>
 
   <section class="page-section">
     <div class="site-shell about-intro">
