@@ -15,18 +15,16 @@ import { awards, profile, publications } from '../lib/data';
       <p>以问题定义、协同机制和可量化评估为线索，记录研究方向、论文工作与竞赛实践。</p>
     </div>
     <div class="page-hero-meta">
-      <p>
-        Research Threads <strong>{String(profile.researchThreads.length).padStart(2, '0')}</strong>
-      </p>
-      <p>Publications <strong>{String(publications.length).padStart(2, '0')}</strong></p>
-      <p>Competition Records <strong>{String(awards.length).padStart(2, '0')}</strong></p>
+      <p>研究方向 <strong>{String(profile.researchThreads.length).padStart(2, '0')}</strong></p>
+      <p>论文成果 <strong>{String(publications.length).padStart(2, '0')}</strong></p>
+      <p>竞赛记录 <strong>{String(awards.length).padStart(2, '0')}</strong></p>
     </div>
   </header>
 
   <section class="page-section">
     <div class="site-shell research-intro-grid">
       <aside class="research-index">
-        <p class="eyebrow">Research Map</p>
+        <p class="eyebrow">研究地图</p>
         <ul>
           {
             profile.researchThreads.map((thread, index) => (
@@ -59,7 +57,7 @@ import { awards, profile, publications } from '../lib/data';
         index="01"
         eyebrow="Publications"
         title="论文成果"
-        description="不展示未提供的 DOI、链接、发表年月或卷期号。"
+        description="记录研究主题、方法路径、作者角色与阶段性进展。"
       />
       <ol class="publication-list">
         {
@@ -73,24 +71,24 @@ import { awards, profile, publications } from '../lib/data';
               <div class="publication-meta">
                 <div class="publication-meta-row">
                   <>
-                    <span>Journal</span>
+                    <span>期刊</span>
                     <span>{publication.journal}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
                   <>
-                    <span>Level</span>
+                    <span>级别</span>
                     <span>{publication.level}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
                   <>
-                    <span>Role</span>
+                    <span>角色</span>
                     <span>{publication.role}</span>
                   </>
                 </div>
                 <div class="publication-meta-row">
-                  <span>Status</span>
+                  <span>状态</span>
                   <span
                     class:list={{
                       'publication-status-review': publication.status.includes('Under Review'),
@@ -101,7 +99,7 @@ import { awards, profile, publications } from '../lib/data';
                 </div>
                 {publication.note && (
                   <div class="publication-meta-row">
-                    <span>Note</span>
+                    <span>说明</span>
                     <span>{publication.note}</span>
                   </div>
                 )}
