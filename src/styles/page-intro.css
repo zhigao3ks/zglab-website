@@ -1,0 +1,125 @@
+.page-intro-disclosure {
+  border-bottom: 1px solid var(--color-line);
+  background: rgba(21, 27, 32, 0.35);
+}
+
+.page-intro-disclosure > summary {
+  list-style: none;
+}
+
+.page-intro-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.page-intro-summary {
+  display: flex;
+  min-height: 4.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.page-intro-summary:hover {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.page-intro-summary-main,
+.page-intro-action {
+  display: inline-flex;
+  align-items: center;
+}
+
+.page-intro-summary-main {
+  gap: 0.75rem;
+}
+
+.page-intro-index,
+.page-intro-action {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.page-intro-index {
+  color: var(--color-accent);
+}
+
+.page-intro-summary strong {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.page-intro-action {
+  gap: 0.75rem;
+}
+
+.page-intro-action-expanded {
+  display: none;
+}
+
+.page-intro-chevron {
+  position: relative;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.page-intro-chevron::before,
+.page-intro-chevron::after {
+  position: absolute;
+  top: 50%;
+  width: 0.55rem;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  transition: transform 180ms ease;
+}
+
+.page-intro-chevron::before {
+  left: 0.05rem;
+  transform: rotate(45deg);
+}
+
+.page-intro-chevron::after {
+  right: 0.05rem;
+  transform: rotate(-45deg);
+}
+
+.page-intro-disclosure[open] .page-intro-action-collapsed {
+  display: none;
+}
+
+.page-intro-disclosure[open] .page-intro-action-expanded {
+  display: inline;
+}
+
+.page-intro-disclosure[open] .page-intro-chevron::before {
+  transform: rotate(-45deg);
+}
+
+.page-intro-disclosure[open] .page-intro-chevron::after {
+  transform: rotate(45deg);
+}
+
+.page-intro-panel {
+  overflow: hidden;
+  border-top: 1px solid rgba(53, 65, 73, 0.58);
+}
+
+.page-intro-panel .page-hero {
+  border-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .page-intro-summary {
+    min-height: 3.8rem;
+  }
+
+  .page-intro-action-collapsed,
+  .page-intro-action-expanded {
+    display: none !important;
+  }
+}

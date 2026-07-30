@@ -7,12 +7,16 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "predev": "npm run sync:notes",
     "dev": "astro dev",
+    "prebuild": "npm run sync:notes",
     "build": "astro build",
     "preview": "astro preview",
+    "precheck": "npm run sync:notes",
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "sync:notes": "node scripts/sync-notes.mjs",
     "astro": "astro"
   },
   "dependencies": {

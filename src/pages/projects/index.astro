@@ -1,7 +1,9 @@
 ---
+import PageIntroDisclosure from '../../components/PageIntroDisclosure.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getVisibleProjects } from '../../lib/content';
+import { projectStatusLabels } from '../../lib/status';
 
 const projects = await getVisibleProjects();
 const statuses = [...new Set(projects.flatMap((project) => project.data.status ?? []))];
@@ -12,18 +14,20 @@ const categories = [...new Set(projects.flatMap((project) => project.data.catego
   title="项目档案 — ZGLab"
   description="黄志高的大模型、Agent、RAG、多智能体与 AI 工程项目档案。"
 >
-  <header class="site-shell page-hero">
-    <div class="page-hero-copy">
-      <p class="page-kicker">SYSTEM ARCHIVE / PROJECTS</p>
-      <h1>项目档案</h1>
-      <p>记录问题定义、工程路径、技术栈与评测方法。新增项目只需添加一份 Markdown 文件。</p>
-    </div>
-    <div class="page-hero-meta">
-      <p>Total Systems <strong>{String(projects.length).padStart(2, '0')}</strong></p>
-      <p>Collection <strong>Astro Content</strong></p>
-      <p>Build Mode <strong>Static</strong></p>
-    </div>
-  </header>
+  <PageIntroDisclosure index="02" label="项目概览">
+    <header class="site-shell page-hero">
+      <div class="page-hero-copy">
+        <p class="page-kicker">SYSTEM ARCHIVE / PROJECTS</p>
+        <h1>项目档案</h1>
+        <p>记录问题定义、工程路径、技术栈与评测方法。</p>
+      </div>
+      <div class="page-hero-meta">
+        <p>项目数量 <strong>{String(projects.length).padStart(2, '0')}</strong></p>
+        <p>涉及方向 <strong>{String(categories.length).padStart(2, '0')}</strong></p>
+        <p>关注主题 <strong>AI Systems</strong></p>
+      </div>
+    </header>
+  </PageIntroDisclosure>
 
   <section class="page-section">
     <div class="site-shell">
@@ -46,7 +50,7 @@ const categories = [...new Set(projects.flatMap((project) => project.data.catego
               data-filter={status}
               aria-pressed="false"
             >
-              {status}
+              {projectStatusLabels[status] ?? status}
             </button>
           ))
         }
@@ -74,7 +78,7 @@ const categories = [...new Set(projects.flatMap((project) => project.data.catego
             ))}
           </ol>
         ) : (
-          <p class="empty-state">当前没有可见项目。</p>
+          <p class="empty-state">项目内容正在整理中。</p>
         )
       }
     </div>

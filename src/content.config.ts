@@ -52,4 +52,20 @@ const logs = defineCollection({
   }),
 });
 
-export const collections = { projects, logs };
+const notes = defineCollection({
+  loader: glob({ base: './src/content/notes', pattern: '**/*.md' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    status: z.enum(['draft', 'published', 'archived']).default('draft'),
+    category: z.string(),
+    tags: z.array(z.string()).default([]),
+    summary: z.string(),
+    featured: z.boolean().default(false),
+    visible: z.boolean().default(true),
+    cover: z.string().optional(),
+  }),
+});
+
+export const collections = { projects, logs, notes };

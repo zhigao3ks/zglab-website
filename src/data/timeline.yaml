@@ -1,7 +1,7 @@
 - id: zglab-rebuild
   marker: '2026.07'
   title: ZGLab 信息架构重构
-  summary: 将个人主页重构为配置驱动的数字研究档案与工程实验室门户。
+  summary: 将分散的项目、研究与实践整理为统一的个人数字档案。
   type: lab
   visible: true
 - id: current-agentic-system

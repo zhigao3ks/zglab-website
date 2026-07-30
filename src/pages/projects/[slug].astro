@@ -36,11 +36,11 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
         <h1>{data.title}</h1>
         <p class="project-lead">{data.summary}</p>
       </div>
-      <aside class="project-meta-panel" aria-label="项目元数据">
+      <aside class="project-meta-panel" aria-label="项目信息">
         {
           data.status && (
             <div class="project-meta-item">
-              <span class="meta-label">Status</span>
+              <span class="meta-label">状态</span>
               <p>
                 <StatusPill status={data.status} label={projectStatusLabels[data.status]} />
               </p>
@@ -50,7 +50,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
         {
           data.startedAt && (
             <div class="project-meta-item">
-              <span class="meta-label">Started</span>
+              <span class="meta-label">开始时间</span>
               <p>{dateFormatter.format(data.startedAt)}</p>
             </div>
           )
@@ -58,7 +58,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
         {
           data.updatedAt && (
             <div class="project-meta-item">
-              <span class="meta-label">Updated</span>
+              <span class="meta-label">最近更新</span>
               <p>{dateFormatter.format(data.updatedAt)}</p>
             </div>
           )
@@ -66,7 +66,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
         {
           data.stack.length > 0 && (
             <div class="project-meta-item">
-              <span class="meta-label">Stack</span>
+              <span class="meta-label">主要技术</span>
               <p>{data.stack.join(' · ')}</p>
             </div>
           )
@@ -108,7 +108,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
       {
         data.highlights.length > 0 && (
           <>
-            <h2>Project Highlights</h2>
+            <h2>项目亮点</h2>
             <ul class="highlight-list">
               {data.highlights.map((highlight) => (
                 <li>{highlight}</li>
@@ -120,7 +120,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month:
       {
         data.tags.length > 0 && (
           <>
-            <h2>Keywords</h2>
+            <h2>关键词</h2>
             <ul class="tag-list">
               {data.tags.map((tag) => (
                 <li>{tag}</li>

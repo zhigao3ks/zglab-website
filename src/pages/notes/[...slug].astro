@@ -1,0 +1,94 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import NoteCard from '../../components/notes/NoteCard.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import {
+  estimateReadingMinutes,
+  getNoteSlug,
+  getNoteSourcePath,
+  getPublishedNotes,
+  getRelatedNotes,
+} from '../../lib/notes';
+
+export async function getStaticPaths() {
+  const notes = await getPublishedNotes();
+
+  return notes.map((note, index) => ({
+    params: { slug: getNoteSlug(note) },
+    props: {
+      note,
+      newerNote: index > 0 ? notes[index - 1] : undefined,
+      olderNote: index < notes.length - 1 ? notes[index + 1] : undefined,
+      relatedNotes: getRelatedNotes(note, notes),
+    },
+  }));
+}
+
+interface Props {
+  note: CollectionEntry<'notes'>;
+  newerNote?: CollectionEntry<'notes'>;
+  olderNote?: CollectionEntry<'notes'>;
+  relatedNotes: CollectionEntry<'notes'>[];
+}
+
+const { note, newerNote, olderNote, relatedNotes } = Astro.props;
+const { Content, headings } = await render(note);
+const sourceUrl = `https://github.com/zhigao3ks/notes/blob/main/${getNoteSourcePath(note)}`;
+---
+
+<ArticleLayout
+  title={note.data.title}
+  summary={note.data.summary}
+  date={note.data.date}
+  updated={note.data.updated}
+  category={note.data.category}
+  tags={note.data.tags}
+  readingMinutes={estimateReadingMinutes(note.body)}
+  sourceUrl={sourceUrl}
+  headings={headings}
+>
+  <Content />
+
+  <Fragment slot="after">
+    {
+      (newerNote || olderNote) && (
+        <nav class="note-pagination" aria-label="相邻文章">
+          {olderNote ? (
+            <a href={`/notes/${getNoteSlug(olderNote)}/`}>
+              <span>较早一篇</span>
+              <strong>{olderNote.data.title}</strong>
+            </a>
+          ) : (
+            <span />
+          )}
+          {newerNote ? (
+            <a href={`/notes/${getNoteSlug(newerNote)}/`}>
+              <span>较新一篇</span>
+              <strong>{newerNote.data.title}</strong>
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
+
+    {
+      relatedNotes.length > 0 && (
+        <section class="related-notes" aria-labelledby="related-notes-title">
+          <div class="related-notes-heading">
+            <p class="page-kicker">RELATED READING</p>
+            <h2 id="related-notes-title">继续阅读</h2>
+          </div>
+          <ol class="related-notes-grid">
+            {relatedNotes.map((relatedNote, index) => (
+              <li>
+                <NoteCard note={relatedNote} index={index + 1} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+  </Fragment>
+</ArticleLayout>
