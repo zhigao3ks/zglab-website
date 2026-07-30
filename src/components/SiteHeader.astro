@@ -1,11 +1,18 @@
 ---
 import { visibleNavigation } from '../config/navigation';
 import { profile } from '../lib/data';
+import '../styles/navigation.css';
 import GithubIcon from './GithubIcon.astro';
 
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+const homeItem = visibleNavigation.find((item) => item.href === '/');
+const secondaryItems = visibleNavigation.filter((item) => item.href !== '/');
+const activeSecondaryIndex = secondaryItems.findIndex((item) => isActive(item.href));
+const activeSecondary =
+  activeSecondaryIndex >= 0 ? secondaryItems[activeSecondaryIndex] : undefined;
+const collapsedRange = `02–${String(secondaryItems.length + 1).padStart(2, '0')}`;
 ---
 
 <header class="site-header">
@@ -17,29 +24,45 @@ const isActive = (href: string) =>
       <span class="brand-index">/ 01</span>
     </a>
 
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="primary-navigation"
-    >
-      <span>菜单</span>
-      <span class="nav-toggle-lines" aria-hidden="true"></span>
-    </button>
+    <nav class="primary-nav" aria-label="主导航">
+      {
+        homeItem && (
+          <a
+            class="home-nav-link"
+            href={homeItem.href}
+            aria-current={isActive(homeItem.href) ? 'page' : undefined}
+          >
+            <span class="nav-index">01</span>
+            <span class="nav-label">{homeItem.label}</span>
+          </a>
+        )
+      }
 
-    <nav id="primary-navigation" class="primary-nav" aria-label="主导航">
-      <ol>
-        {
-          visibleNavigation.map((item, index) => (
-            <li>
-              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-                <span class="nav-index">{String(index + 1).padStart(2, '0')}</span>
-                <span>{item.label}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ol>
+      {
+        secondaryItems.length > 0 && (
+          <details class="nav-disclosure" data-nav-disclosure>
+            <summary aria-label="展开站点导航">
+              <span class="nav-index">
+                {activeSecondary
+                  ? String(activeSecondaryIndex + 2).padStart(2, '0')
+                  : collapsedRange}
+              </span>
+              <span class="nav-label">{activeSecondary?.label ?? '浏览'}</span>
+              <span class="nav-summary-icon" aria-hidden="true"></span>
+            </summary>
+            <ol class="nav-dropdown">
+              {secondaryItems.map((item, index) => (
+                <li>
+                  <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                    <span class="nav-index">{String(index + 2).padStart(2, '0')}</span>
+                    <span>{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )
+      }
     </nav>
 
     <div class="header-actions">
@@ -68,19 +91,24 @@ const isActive = (href: string) =>
 </header>
 
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-  const navigation = document.querySelector<HTMLElement>('.primary-nav');
+  const disclosure = document.querySelector<HTMLDetailsElement>('[data-nav-disclosure]');
 
-  toggle?.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    navigation?.classList.toggle('is-open', !expanded);
+  disclosure?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      disclosure.open = false;
+    });
   });
 
-  navigation?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      toggle?.setAttribute('aria-expanded', 'false');
-      navigation.classList.remove('is-open');
-    });
+  document.addEventListener('click', (event) => {
+    if (disclosure?.open && event.target instanceof Node && !disclosure.contains(event.target)) {
+      disclosure.open = false;
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && disclosure?.open) {
+      disclosure.open = false;
+      disclosure.querySelector('summary')?.focus();
+    }
   });
 </script>
