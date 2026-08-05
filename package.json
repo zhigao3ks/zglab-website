@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "sync:notes": "node scripts/sync-notes.mjs",
+    "deploy:all": "bash ops/deploy-all.sh",
     "astro": "astro"
   },
   "dependencies": {
