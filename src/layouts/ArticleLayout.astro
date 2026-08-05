@@ -92,34 +92,185 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   </div>
 
   <script>
-    const mermaidBlocks = new Set<HTMLElement>();
-    document
-      .querySelectorAll<HTMLElement>('pre[data-language="mermaid"], pre.language-mermaid')
-      .forEach((block) => mermaidBlocks.add(block));
-    document.querySelectorAll<HTMLElement>('code.language-mermaid').forEach((code) => {
-      if (code.parentElement) mermaidBlocks.add(code.parentElement);
+    type MermaidRenderResult = {
+      svg: string;
+      bindFunctions?: (element: Element) => void;
+    };
+
+    type MermaidApi = {
+      initialize: (configuration: Record<string, unknown>) => void;
+      render: (id: string, source: string, container?: Element) => Promise<MermaidRenderResult>;
+    };
+
+    type MermaidDiagram = {
+      figure: HTMLElement;
+      viewport: HTMLElement;
+      sourceDetails: HTMLDetailsElement;
+      source: string;
+    };
+
+    const mermaidSourcePattern =
+      /^(?:---[\s\S]*?---\s*)?(?:flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram|journey|gantt|pie|mindmap|timeline|gitGraph|quadrantChart|xychart-beta|sankey-beta|block-beta|packet-beta|architecture-beta)\b/;
+
+    const isExplicitMermaidBlock = (block: HTMLElement, code: HTMLElement | null) =>
+      block.dataset.language === 'mermaid' ||
+      block.classList.contains('language-mermaid') ||
+      code?.dataset.language === 'mermaid' ||
+      code?.classList.contains('language-mermaid');
+
+    const normalizeMermaidSource = (source: string) =>
+      source
+        .replace(/\r\n?/g, '\n')
+        .replace(/<br\s*\/?>/gi, '<br/>')
+        .trim();
+
+    const createDiagram = (block: HTMLElement, source: string): MermaidDiagram => {
+      const figure = document.createElement('figure');
+      figure.className = 'mermaid-figure';
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid';
+      viewport.setAttribute('role', 'img');
+      viewport.setAttribute('aria-label', '文章流程图');
+      viewport.innerHTML = '<span class="mermaid-loading">图表加载中…</span>';
+
+      const sourceDetails = document.createElement('details');
+      sourceDetails.className = 'mermaid-source';
+
+      const summary = document.createElement('summary');
+      summary.textContent = '查看图表源码';
+
+      const sourcePre = document.createElement('pre');
+      const sourceCode = document.createElement('code');
+      sourceCode.textContent = source;
+      sourcePre.append(sourceCode);
+      sourceDetails.append(summary, sourcePre);
+
+      figure.append(viewport, sourceDetails);
+      block.replaceWith(figure);
+
+      return { figure, viewport, sourceDetails, source };
+    };
+
+    const diagrams: MermaidDiagram[] = [];
+    document.querySelectorAll<HTMLElement>('.note-prose pre').forEach((block) => {
+      const code = block.querySelector<HTMLElement>('code');
+      const source = normalizeMermaidSource(code?.textContent ?? block.textContent ?? '');
+      if (!source) return;
+
+      if (isExplicitMermaidBlock(block, code) || mermaidSourcePattern.test(source)) {
+        diagrams.push(createDiagram(block, source));
+      }
     });
 
-    if (mermaidBlocks.size > 0) {
-      const diagrams = [...mermaidBlocks].map((block) => {
-        const container = document.createElement('div');
-        container.className = 'mermaid';
-        container.textContent = block.textContent ?? '';
-        block.replaceWith(container);
-        return container;
-      });
-      const mermaidModuleUrl = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    const mermaidModuleUrls = [
+      'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
+      'https://unpkg.com/mermaid@11/dist/mermaid.esm.min.mjs',
+      'https://esm.sh/mermaid@11?bundle',
+    ];
 
-      import(/* @vite-ignore */ mermaidModuleUrl)
-        .then(({ default: mermaid }) => {
-          mermaid.initialize({
-            startOnLoad: false,
-            securityLevel: 'strict',
-            theme: 'dark',
-          });
-          return mermaid.run({ nodes: diagrams });
+    const loadMermaid = async (): Promise<MermaidApi> => {
+      let lastError: unknown;
+
+      for (const moduleUrl of mermaidModuleUrls) {
+        try {
+          const imported = (await import(/* @vite-ignore */ moduleUrl)) as {
+            default?: MermaidApi;
+          } & MermaidApi;
+          return (imported.default ?? imported) as MermaidApi;
+        } catch (error) {
+          lastError = error;
+          console.warn(`[notes] Mermaid 模块加载失败，尝试备用地址：${moduleUrl}`, error);
+        }
+      }
+
+      throw lastError ?? new Error('Mermaid 模块加载失败');
+    };
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const isDarkTheme = () => {
+      const preference = document.documentElement.dataset.theme;
+      return preference === 'dark' || (preference !== 'light' && prefersDark.matches);
+    };
+
+    const showDiagramError = (diagram: MermaidDiagram, error: unknown) => {
+      diagram.figure.classList.add('is-error');
+      diagram.viewport.textContent = '图表暂时无法渲染，源码已保留在下方。';
+      diagram.sourceDetails.open = true;
+      console.warn('[notes] Mermaid 图表渲染失败。', error, diagram.source);
+    };
+
+    let mermaid: MermaidApi | undefined;
+    let renderSequence = 0;
+
+    const renderDiagrams = async () => {
+      if (!mermaid || diagrams.length === 0) return;
+
+      renderSequence += 1;
+      const currentSequence = renderSequence;
+      const dark = isDarkTheme();
+
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'antiscript',
+        theme: dark ? 'dark' : 'default',
+        flowchart: {
+          htmlLabels: true,
+          useMaxWidth: true,
+        },
+        sequence: {
+          useMaxWidth: true,
+        },
+      });
+
+      for (const [index, diagram] of diagrams.entries()) {
+        if (currentSequence !== renderSequence) return;
+
+        diagram.figure.classList.remove('is-error');
+        diagram.sourceDetails.open = false;
+        diagram.viewport.innerHTML = '<span class="mermaid-loading">图表加载中…</span>';
+
+        try {
+          const id = `mermaid-${Date.now()}-${currentSequence}-${index}`;
+          const { svg, bindFunctions } = await mermaid.render(id, diagram.source, diagram.viewport);
+          if (currentSequence !== renderSequence) return;
+
+          diagram.viewport.innerHTML = svg;
+          bindFunctions?.(diagram.viewport);
+        } catch (error) {
+          showDiagramError(diagram, error);
+        }
+      }
+    };
+
+    if (diagrams.length > 0) {
+      loadMermaid()
+        .then((loadedMermaid) => {
+          mermaid = loadedMermaid;
+          return renderDiagrams();
         })
-        .catch((error) => console.warn('[notes] Mermaid 渲染失败，保留文章其他内容。', error));
+        .catch((error) => {
+          diagrams.forEach((diagram) => showDiagramError(diagram, error));
+        });
+
+      let rerenderTimer: number | undefined;
+      const scheduleRerender = () => {
+        window.clearTimeout(rerenderTimer);
+        rerenderTimer = window.setTimeout(() => void renderDiagrams(), 120);
+      };
+
+      new MutationObserver((mutations) => {
+        if (mutations.some((mutation) => mutation.attributeName === 'data-theme')) {
+          scheduleRerender();
+        }
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      prefersDark.addEventListener('change', () => {
+        if (!document.documentElement.dataset.theme) scheduleRerender();
+      });
     }
   </script>
 </BaseLayout>
