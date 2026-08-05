@@ -13,7 +13,7 @@ const navigation: NavigationItem[] = [
   { label: '想法', href: '/ideas' },
   { label: '关于', href: '/about' },
   { label: '笔记', href: '/notes', feature: 'notes' },
-  { label: '工具', href: '/tools', feature: 'tools' },
+  { label: '工具', href: 'http://tools.zglab.fun', feature: 'tools' },
 ];
 
 export const visibleNavigation = navigation.filter(

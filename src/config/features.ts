@@ -2,7 +2,7 @@ export type FeatureKey = 'notes' | 'tools' | 'runtimeStatus' | 'githubActivity' 
 
 export const features: Record<FeatureKey, boolean> = {
   notes: true,
-  tools: false,
+  tools: true,
   runtimeStatus: false,
   githubActivity: false,
   downloadResume: false,
