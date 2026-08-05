@@ -3,6 +3,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { siteConfig } from '../config/site';
 import '../styles/global.css';
+import '../styles/theme.css';
 
 interface Props {
   title?: string;
@@ -26,6 +27,18 @@ const socialImage = image ? new URL(image, siteConfig.url) : undefined;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <script is:inline>
+      (() => {
+        try {
+          const preference = window.localStorage.getItem('zglab:theme');
+          if (preference === 'dark' || preference === 'light') {
+            document.documentElement.dataset.theme = preference;
+          }
+        } catch {
+          // Theme persistence is optional; system preference remains available.
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#151b20" />
     <meta name="generator" content={Astro.generator} />
