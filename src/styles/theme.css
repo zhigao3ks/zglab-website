@@ -1,0 +1,118 @@
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #f2f0e9;
+  --color-bg-soft: #faf8f1;
+  --color-surface: #fffdf7;
+  --color-surface-light: #e9e6dc;
+  --color-text: #172127;
+  --color-text-soft: #536067;
+  --color-muted: #737d82;
+  --color-line: #c9cec9;
+  --color-accent: #087f78;
+  --color-accent-strong: #06645f;
+  --color-warm: #9a6110;
+  --color-danger: #a43c35;
+  --shadow-soft: 0 24px 70px rgb(16 29 34 / 10%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --color-bg: #f2f0e9;
+    --color-bg-soft: #faf8f1;
+    --color-surface: #fffdf7;
+    --color-surface-light: #e9e6dc;
+    --color-text: #172127;
+    --color-text-soft: #536067;
+    --color-muted: #737d82;
+    --color-line: #c9cec9;
+    --color-accent: #087f78;
+    --color-accent-strong: #06645f;
+    --color-warm: #9a6110;
+    --color-danger: #a43c35;
+    --shadow-soft: 0 24px 70px rgb(16 29 34 / 10%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+  }
+}
+
+body {
+  background:
+    linear-gradient(color-mix(in srgb, var(--color-text) 3%, transparent) 1px, transparent 1px),
+    var(--color-bg);
+}
+
+body::before {
+  background: radial-gradient(
+    circle at 70% 5%,
+    color-mix(in srgb, var(--color-accent) 11%, transparent),
+    transparent 62%
+  );
+}
+
+.site-header {
+  border-bottom-color: color-mix(in srgb, var(--color-line) 78%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+}
+
+.site-footer {
+  background: var(--color-bg-soft);
+}
+
+.filter-button:hover,
+.filter-button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.theme-switcher {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg-soft);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.theme-switcher:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+  color: var(--color-accent);
+}
+
+.theme-switcher-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .theme-switcher {
+    width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+  }
+
+  .theme-switcher-label {
+    display: none;
+  }
+}
