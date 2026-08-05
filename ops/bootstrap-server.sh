@@ -27,7 +27,8 @@ REMOTE_BACKUP_ROOT="${REMOTE_BACKUP_ROOT:-/var/backups/zglab-release}"
 printf '将初始化服务器 %s 的统一发布目录。\n' "${DEPLOY_SERVER}"
 printf '该操作只需执行一次，并会要求一次 sudo 认证。\n\n'
 
-ssh "${DEPLOY_SERVER}" bash -s -- \
+# 强制分配远程 TTY，使 sudo 能够安全地从终端读取密码。
+ssh -tt "${DEPLOY_SERVER}" bash -s -- \
   "${WEBSITE_REMOTE_ROOT}" \
   "${TOOLS_REMOTE_ROOT}" \
   "${REMOTE_STAGE_ROOT}" \
