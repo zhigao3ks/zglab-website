@@ -13,9 +13,7 @@ export const noteCategoryLabels: Record<string, string> = {
 export const getNoteSlug = (note: Note): string => note.id.replace(/\.(md|mdx)$/i, '');
 
 export const getNoteSourcePath = (note: Note): string => {
-  const relativePath = note.filePath
-    ?.replace(/\\/g, '/')
-    .replace(/^src\/content\/notes\//, '');
+  const relativePath = note.filePath?.replace(/\\/g, '/').replace(/^src\/content\/notes\//, '');
   if (relativePath) return relativePath;
   return note.id.match(/\.(md|mdx)$/i) ? note.id : `${note.id}.md`;
 };
@@ -56,10 +54,7 @@ export const getRelatedNotes = (current: Note, notes: Note[], limit = 3): Note[]
       return { note, score: sharedTags * 3 + sameCategory };
     })
     .filter(({ score }) => score > 0)
-    .sort(
-      (a, b) =>
-        b.score - a.score || b.note.data.date.getTime() - a.note.data.date.getTime(),
-    )
+    .sort((a, b) => b.score - a.score || b.note.data.date.getTime() - a.note.data.date.getTime())
     .slice(0, limit)
     .map(({ note }) => note);
 };

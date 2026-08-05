@@ -73,22 +73,44 @@ import { awards, profile, publications } from '../lib/data';
               </div>
               <div class="publication-meta">
                 <div class="publication-meta-row">
-                  <><span>期刊</span><span>{publication.journal}</span></>
+                  <>
+                    <>
+                      <span>期刊</span>
+                      <span>{publication.journal}</span>
+                    </>
+                  </>
                 </div>
                 <div class="publication-meta-row">
-                  <><span>级别</span><span>{publication.level}</span></>
+                  <>
+                    <>
+                      <span>级别</span>
+                      <span>{publication.level}</span>
+                    </>
+                  </>
                 </div>
                 <div class="publication-meta-row">
-                  <><span>角色</span><span>{publication.role}</span></>
+                  <>
+                    <>
+                      <span>角色</span>
+                      <span>{publication.role}</span>
+                    </>
+                  </>
                 </div>
                 <div class="publication-meta-row">
                   <span>状态</span>
-                  <span class:list={{ 'publication-status-review': publication.status.includes('Under Review') }}>
+                  <span
+                    class:list={{
+                      'publication-status-review': publication.status.includes('Under Review'),
+                    }}
+                  >
                     {publication.status}
                   </span>
                 </div>
                 {publication.note && (
-                  <div class="publication-meta-row"><span>说明</span><span>{publication.note}</span></div>
+                  <div class="publication-meta-row">
+                    <span>说明</span>
+                    <span>{publication.note}</span>
+                  </div>
                 )}
               </div>
             </li>

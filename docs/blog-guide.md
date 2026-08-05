@@ -22,14 +22,14 @@ NOTES_SOURCE_DIR=/absolute/path/to/notes
 
 ```yaml
 ---
-title: "文章标题"
+title: '文章标题'
 date: 2026-07-30
 updated: 2026-07-30
 status: published
 category: knowledge
 tags:
   - Astro
-summary: "用于列表和 SEO 的文章摘要。"
+summary: '用于列表和 SEO 的文章摘要。'
 ---
 ```
 

@@ -21,10 +21,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 });
 ---
 
-<BaseLayout
-  title="笔记与实践 — ZGLab"
-  description="项目中的正式问题、技术决策和可复用方法整理。"
->
+<BaseLayout title="笔记与实践 — ZGLab" description="项目中的正式问题、技术决策和可复用方法整理。">
   <PageIntroDisclosure index="06" label="笔记概览">
     <header class="site-shell page-hero note-index-hero">
       <div class="page-hero-copy">
@@ -48,12 +45,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     <div class="site-shell">
       <div class="note-controls">
         <div class="filter-bar" role="group" aria-label="笔记分类筛选">
-          <button
-            class="filter-button"
-            type="button"
-            data-note-filter="all"
-            aria-pressed="true"
-          >
+          <button class="filter-button" type="button" data-note-filter="all" aria-pressed="true">
             全部 / {notes.length}
           </button>
           {
@@ -123,9 +115,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
         activeCategory = button.dataset.noteFilter ?? 'all';
-        filterButtons.forEach((item) =>
-          item.setAttribute('aria-pressed', String(item === button)),
-        );
+        filterButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
         applyFilters();
       });
     });

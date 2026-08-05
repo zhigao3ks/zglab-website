@@ -15,17 +15,8 @@ interface Props {
   headings: Array<{ depth: number; slug: string; text: string }>;
 }
 
-const {
-  title,
-  summary,
-  date,
-  updated,
-  category,
-  tags,
-  readingMinutes,
-  sourceUrl,
-  headings,
-} = Astro.props;
+const { title, summary, date, updated, category, tags, readingMinutes, sourceUrl, headings } =
+  Astro.props;
 const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 3);
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   year: 'numeric',
@@ -48,9 +39,11 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     <p class="note-lead">{summary}</p>
     <div class="note-byline" aria-label="文章信息">
       <time datetime={date.toISOString()}>发布于 {dateFormatter.format(date)}</time>
-      {updated && updated.getTime() !== date.getTime() && (
-        <time datetime={updated.toISOString()}>更新于 {dateFormatter.format(updated)}</time>
-      )}
+      {
+        updated && updated.getTime() !== date.getTime() && (
+          <time datetime={updated.toISOString()}>更新于 {dateFormatter.format(updated)}</time>
+        )
+      }
       <span>{readingMinutes} 分钟阅读</span>
     </div>
   </header>
@@ -75,14 +68,18 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
         )
       }
 
-      {tags.length > 0 && (
-        <section>
-          <p class="note-side-title">关键词</p>
-          <ul class="note-side-tags">
-            {tags.map((tag) => <li>{tag}</li>)}
-          </ul>
-        </section>
-      )}
+      {
+        tags.length > 0 && (
+          <section>
+            <p class="note-side-title">关键词</p>
+            <ul class="note-side-tags">
+              {tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       <a class="note-source-link" href={sourceUrl} target="_blank" rel="noreferrer">
         在 GitHub 查看原文 ↗
@@ -111,8 +108,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
         block.replaceWith(container);
         return container;
       });
-      const mermaidModuleUrl =
-        'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      const mermaidModuleUrl = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
       import(/* @vite-ignore */ mermaidModuleUrl)
         .then(({ default: mermaid }) => {

@@ -17,12 +17,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 const searchText = [data.title, data.summary, data.category, ...data.tags].join(' ').toLowerCase();
 ---
 
-<article
-  class="note-card"
-  data-note-card
-  data-category={data.category}
-  data-search={searchText}
->
+<article class="note-card" data-note-card data-category={data.category} data-search={searchText}>
   <a href={`/notes/${getNoteSlug(note)}/`} aria-label={`阅读：${data.title}`}>
     <div class="note-card-topline">
       <span>{String(index).padStart(2, '0')}</span>
