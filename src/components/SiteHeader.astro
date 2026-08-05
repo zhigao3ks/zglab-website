@@ -43,6 +43,16 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="header-actions">
+      <button
+        class="theme-switcher"
+        type="button"
+        data-theme-switcher
+        title="当前主题：跟随系统。点击切换。"
+        aria-label="当前主题：跟随系统。点击切换主题。"
+      >
+        <span class="theme-switcher-icon" aria-hidden="true">◐</span>
+        <span class="theme-switcher-label" data-theme-label>跟随系统</span>
+      </button>
       {
         profile.github && (
           <a
@@ -68,8 +78,75 @@ const isActive = (href: string) =>
 </header>
 
 <script>
+  type ThemePreference = 'system' | 'dark' | 'light';
+
   const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
   const navigation = document.querySelector<HTMLElement>('.primary-nav');
+  const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-switcher]');
+  const themeLabel = themeButton?.querySelector<HTMLElement>('[data-theme-label]');
+  const themeColorMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  const themeKey = 'zglab:theme';
+  const preferences: ThemePreference[] = ['system', 'dark', 'light'];
+  const labels: Record<ThemePreference, string> = {
+    system: '跟随系统',
+    dark: '深色',
+    light: '浅色',
+  };
+
+  const getThemePreference = (): ThemePreference => {
+    try {
+      const value = window.localStorage.getItem(themeKey);
+      return value === 'dark' || value === 'light' ? value : 'system';
+    } catch {
+      return 'system';
+    }
+  };
+
+  const updateThemeColor = () => {
+    const background = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-bg')
+      .trim();
+    if (background) themeColorMeta?.setAttribute('content', background);
+  };
+
+  const updateThemeButton = (preference: ThemePreference) => {
+    const label = labels[preference];
+    if (themeLabel) themeLabel.textContent = label;
+    if (themeButton) {
+      themeButton.title = `当前主题：${label}。点击切换。`;
+      themeButton.setAttribute('aria-label', `当前主题：${label}。点击切换主题。`);
+    }
+    window.requestAnimationFrame(updateThemeColor);
+  };
+
+  const setThemePreference = (preference: ThemePreference) => {
+    try {
+      if (preference === 'system') {
+        window.localStorage.removeItem(themeKey);
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        window.localStorage.setItem(themeKey, preference);
+        document.documentElement.dataset.theme = preference;
+      }
+    } catch {
+      if (preference === 'system') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.dataset.theme = preference;
+    }
+    updateThemeButton(preference);
+  };
+
+  let themePreference = getThemePreference();
+  updateThemeButton(themePreference);
+
+  themeButton?.addEventListener('click', () => {
+    const nextIndex = (preferences.indexOf(themePreference) + 1) % preferences.length;
+    themePreference = preferences[nextIndex];
+    setThemePreference(themePreference);
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (themePreference === 'system') updateThemeColor();
+  });
 
   toggle?.addEventListener('click', () => {
     const expanded = toggle.getAttribute('aria-expanded') === 'true';
