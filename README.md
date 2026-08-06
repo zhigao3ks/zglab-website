@@ -1,6 +1,8 @@
 # ZGLab
 
-黄志高的个人数字研究档案与工程实验室门户。项目使用 Astro + TypeScript 构建，内容由 YAML 和 Astro Content Collections 驱动，默认输出纯静态文件，不需要常驻 Node 服务。
+个人数字研究档案与工程实验室门户。项目使用 Astro + TypeScript 构建，内容由 YAML 和 Astro Content Collections 驱动，默认输出纯静态文件，不需要常驻 Node 服务。
+
+### 链接:www.zglab.fun
 
 ## 1. 环境要求
 
