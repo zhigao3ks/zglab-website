@@ -1,47 +1,46 @@
-- id: llm-agent
-  title: 大模型与 Agent 系统
-  description: 熟悉基于 LangGraph 和 LangChain 的 Agent 工作流设计，具备 MCP 工具接入、Prompt Engineering、知识库构建、Embedding 检索、混合召回、重排序与自动化评测经验。
+- id: llm-engineering
+  title: LLM 应用工程
+  description: 专注大模型应用开发，具备 RAG、Agent、MCP、Embedding 检索和 AI 应用评测实践经验。
   keywords:
+    - LLM
+    - RAG
+    - Agent
+    - MCP
     - LangGraph
     - LangChain
-    - MCP
     - Prompt Engineering
-    - Agent Orchestration
-    - RAG
     - Embedding
-    - Vector Database
-    - Hybrid Search
-    - BGE-Reranker
-    - LLM-as-a-Judge
-    - Multi-Agent
-- id: machine-learning
-  title: 机器学习与深度学习
-  description: 熟悉常见机器学习算法与深度学习模型，能够使用 PyTorch 完成模型训练、微调、参数优化和实验评估，掌握数据预处理、特征提取与模型效果分析方法。
-  keywords:
-    - PyTorch
-    - CNN
-    - RNN
-    - LSTM
-    - Transformer
-    - LoRA
-    - 逻辑回归
-    - 决策树
-    - 随机森林
-    - 特征工程
-    - 模型评估
-- id: engineering
-  title: 工程开发与基础设施
-  description: 熟练使用 Python 和 Java，具备后端接口、实时通信、数据库设计、缓存管理、容器化部署和 Linux 服务运维经验，重视代码结构、系统可观测性与工程可维护性。
+    - Vector Retrieval
+    - Reranker
+    - Evaluation
+- id: backend-engineering
+  title: 后端与系统开发
+  description: 熟悉 Python 和 Java 服务开发，具备 API 设计、数据库、实时通信和服务部署经验。
   keywords:
     - Python
     - Java
     - FastAPI
+    - Spring Boot
     - WebSocket
-    - PostgreSQL
     - MySQL
+    - PostgreSQL
     - Redis
-    - NumPy
-    - Pandas
+- id: frontend-engineering
+  title: 前端工程
+  description: 具备现代 Web 应用开发能力，能够完成 AI 应用交互界面建设。
+  keywords:
+    - Vue3
+    - Astro
+    - TypeScript
+    - JavaScript
+    - Preact
+- id: infrastructure
+  title: 工程基础设施
+  description: 熟悉 Linux 环境、容器化部署和生产服务运维。
+  keywords:
+    - Linux
     - Docker
     - Nginx
-    - Linux
+    - Systemd
+    - HTTPS
+    - CI/CD
