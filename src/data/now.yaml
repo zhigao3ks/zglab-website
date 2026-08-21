@@ -1,9 +1,15 @@
-currentProject: agentic-enterprise-qa
+currentProject: zglab-rag
 eyebrow: Current Focus
-title: 让 Agent 系统从“能够回答”走向“可验证地回答”
-problem: 当前关注复杂企业文档中的混合检索、跨源工具协同，以及回答忠实度与完整性的自动化评测。
-recentUpdate: 正在整理 Agent 编排、检索链路和 Evaluation Harness 的项目档案。
+title: 构建可验证、可部署的个人 AI 助手系统
+problem: 当前关注 RAG 系统、Agent 工作流和 AI 应用工程中的可靠性、评测与持续迭代。
+recentUpdate: 已完成 zglab-rag 生产部署，并持续完善 Agent、MCP 与个人 AI 工程体系。
 principles:
   - 明确问题边界
   - 保留执行链路
   - 建立量化评估
+  - 优先工程落地
+projects:
+  - zglab-rag
+  - resume-tailor-agent
+  - zglab-daily
+  - meeting-agent
