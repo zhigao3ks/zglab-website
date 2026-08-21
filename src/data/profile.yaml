@@ -1,38 +1,35 @@
 name: 黄志高
 nameEn: Huang Zhigao
-role: 计算机技术硕士研究生
+role: AI Engineer / 计算机技术硕士研究生
 school: 郑州大学
 status: 求职中
 statusEn: Open to Opportunities
-headline: AI Agent / RAG / 多智能体系统
-intro: 专注大模型、Agent 与 RAG 系统，把研究问题做成可评测、可部署、可持续迭代的智能应用。
+headline: AI Engineer / LLM Applications / RAG / Agent Systems
+intro: 专注大模型应用工程、Agent 与 RAG 系统，致力于构建可评测、可部署、可持续迭代的 AI 应用。
 bio:
-  - 黄志高，计算机技术硕士研究生，目前处于求职阶段，主要关注大模型、Agentic AI、RAG 与多智能体协同系统。
-  - 我重视从模型能力到工程系统的完整落地，熟悉 LangGraph、LangChain、MCP、Embedding、向量数据库和混合检索等技术，具备 Agent 编排、知识库问答、模型路由、流式交互和自动化评测相关实践。
-  - 在工程实现方面，我主要使用 Python 和 Java，具备 FastAPI、WebSocket、PostgreSQL、Redis、MySQL、Docker 与 Nginx 等服务开发和部署经验；同时熟悉 PyTorch，具备数据处理、模型训练、LoRA 微调、调参与评测经验。
-  - 我希望持续构建具有明确问题定义、可观测执行链路和可量化评估体系的 AI 应用，并探索大模型在企业知识分析、实时交互、智能决策和个性化服务中的实际价值。
+  - 黄志高，计算机技术硕士研究生，关注大模型应用工程、Agentic AI、RAG 与智能系统构建。
+  - 我重视从模型能力到工程系统的完整落地，实践方向包括知识库问答、Agent 工作流、MCP、Embedding 检索、模型评测和生产部署。
+  - 在工程开发方面，主要使用 Python 和 Java，具备 FastAPI、Vue、数据库设计、Docker、Nginx 和 Linux 服务部署经验。
+  - 我持续构建 ZGLab 个人 AI 工程实验室，探索如何将大模型能力转化为可靠的软件系统。
 directions:
-  - 大模型
-  - Agent
+  - 大模型应用
+  - Agent 系统
   - RAG
-  - 多智能体系统
-  - 模型评测
+  - MCP
   - AI 工程化
+  - 软件系统设计
 researchThreads:
   - id: llm-agent
     title: 大模型与 Agent
-    summary: 关注任务规划、工具调用、执行状态与可观测 Agent 工作流。
+    summary: 探索任务规划、工具调用、执行状态和可观测 Agent 工作流。
   - id: rag
     title: RAG 与知识增强
-    summary: 探索混合检索、重排序、事实校验与知识库评测方法。
-  - id: multi-agent
-    title: 多智能体协同
-    summary: 研究角色分工、协同决策与复杂任务中的闭环验证。
-  - id: evaluation
-    title: 模型评测与工程部署
-    summary: 建立可量化评估体系，并将模型能力转化为稳定服务。
+    summary: 研究知识获取、检索优化、重排序和答案可信度评估。
+  - id: engineering
+    title: AI 应用工程
+    summary: 将模型能力转化为稳定、可部署和可维护的应用系统。
 github: https://github.com/zhigao3ks
-email: huangzg443@gmail.com
+email: huangzg0162@163.com
 website: https://zglab.fun
 avatar: /images/avatar-abstract.svg
 avatarAlt: 由 ZG 字母、人物轮廓与拓扑节点构成的抽象头像
